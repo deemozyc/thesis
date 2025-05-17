@@ -16,12 +16,12 @@ In such settings, we observe that allowing chains to follow cycles can only impr
 
 Finally, we note that it is now possible for one donor to participate in a cycle while the second donor from the same patient initiates or joins a chain. This creates a structural asymmetry in the problem. A general graph representation is no longer sufficient. Instead, we need to explicitly distinguish between patients and donors in the model to accurately capture the structure and constraints of the problem. An example of a graph with a patient having two donors is shown in \autoref{fig:model_example}.
 
-Throughout the thesis, we will use the second model—that is, the one that distinguishes between node types. In the diagrams, patients will be represented as circles and donors as squares.
+Throughout the thesis, we will use the second model—that is, the one that distinguishes between node types. In the diagrams, patients will be represented as circles and donors as squares. The compatible edges will be represented as solid arrows and proxy edges as dotted arrows.
 
 \begin{figure}
     \centering
     \includegraphics{data/model_example.pdf}
-    \caption[An example of a graph with a patient having two donors]{Patient $p_2$ has two proxy donors: $d_1^1$ and $d_1^2$. This allows the model to select the cycle $(p_2 \rightarrow d_2^2 \rightarrow p_1 \rightarrow d_1)$ and the chain $(d_2^2 \rightarrow p_3)$.}
+    \caption[An example of a graph with a patient having two donors]{\textbf{(a)} is an example of a graph where a patient has two proxy donors. \textbf{(b)} illustrates that this allows the model to select the cycle $(p_2 \rightarrow d_2^2 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ (in orange) and the chain $(p_2 \rightarrow d_2^2 \rightarrow p_3)$ (in blue).}
     \label{fig:model_example}
 \end{figure}
 
@@ -45,7 +45,7 @@ The model introduced above captures the essential structure of multi-donor kidne
 
 As a starting point, consider the most general setting, where no restrictions are imposed on the length of exchange cycles or donation chains. Given a directed graph $G = (V = P \cup D, E)$, all subsets of edges that satisfy the feasibility constraints described earlier are considered valid solutions. We refer to this formulation as the \textit{Unbounded Multi-Donor Exchange Problem}.
 
-We then consider a more constrained version, where limits are placed on the maximum allowed lengths of cycles and chains. Specifically, in the \textit{$n$-Cycle $m$-Chain Problem}, only subsets in which all cycles have length at most $n$ and all chains have length at most $m$ are considered valid. Here, the length refers to the number of patients the cycle or the chain contains. Returning to the example from \autoref{fig:model_example}, the cycle has length $2$ and the chain has length $1$.
+We then consider a more constrained version, where limits are placed on the maximum allowed lengths of cycles and chains. Specifically, in the \textit{$n$-Cycle $m$-Chain Problem}, only subsets in which all cycles have length at most $n$ and all chains have length at most $m$ are considered valid. Here, the length refers to the number of compatible edges the cycle or the chain contains. Returning to the example from \autoref{fig:model_example}, the cycle has length $2$ and the chain has length $1$.
 
 
 
