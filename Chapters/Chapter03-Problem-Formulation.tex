@@ -5,39 +5,73 @@ This chapter introduces the formal model that underpins this thesis. We consider
 
 \section{Overview of the Model}
 
-We begin by reviewing a model which is commonly used in kidney exchange literature. In the model, each node represents a patient-donor pair, and each directed edge indicates that the donor in the source node is compatible with the patient in the target node. This results in an unweighted directed graph $G = (V, E)$. Depending on the specific problem setting — such as restrictions on the length of allowed exchange cycles — this formulation leads to different variants of graph matching problems. In general, however, the objective is to find disjoint exchange cycles that include the maximum number of patients.
+We begin by reviewing a model which is commonly used in kidney exchange literature. In the model, each node represents a \textit{patient-donor pair}, and each directed edge indicates that the donor in the source node is compatible with the patient in the target node. This results in an unweighted directed graph $G = (V, E)$. Depending on the specific problem setting — such as restrictions on the length of allowed exchange cycles — this formulation leads to different variants of graph matching problems. In general, however, the objective is to find disjoint exchange cycles that include the maximum number of patients.
 
-Extending the model to the version where each patient is associated with multiple alternative proxy donors is straightforward. In this extension, each patient along with all their associated proxy donors is still represented as a single node in the graph. The compatibility edges are then defined such that a directed edge from node $u$ to node $v$ exists if any of the donors associated with patient $u$ is compatible with the patient in node $v$. This preserves the structure of the original graph as a directed graph $G = (V, E)$, but with a potentially denser set of edges due to the increased number of donor-patient compatibility possibilities. This setting is then identical to the standard patient-donor pair \ac{KE} problem: the objective is still to find disjoint exchange cycles in a directed compatibility graph.
+Extending the model to the version where each patient is associated with multiple \textit{alternative donors} is straightforward. In this extension, each patient along with all their associated proxy donors is still represented as a single node in the graph. The compatibility edges are then defined such that a directed edge from node $u$ to node $v$ exists if any of the donors associated with patient $u$ is compatible with the patient in node $v$. This preserves the structure of the original graph as a directed graph $G = (V, E)$, but with a potentially denser set of edges due to the increased number of donor-patient compatibility possibilities. This setting is then identical to the standard patient-donor pair \ac{KE} problem: the objective is still to find disjoint exchange cycles in a directed compatibility graph.
 
-However, a more general scenario arises if we allow a patient to receive a kidney while both of their associated donors are permitted to donate simultaneously. In this case, the first donor may participate in an exchange cycle as usual, while the second donor initiates a donation chain, effectively increasing the total number of transplants. 
-
-In such settings, we observe that allowing chains to follow cycles can only improve social welfare—it never reduces the total number of transplants. Moreover, this problem deviates from the classical graph matching framework: it is no longer a pure matching problem.
-
-
-Finally, we note that it is now possible for one donor to participate in a cycle while the second donor from the same patient initiates or joins a chain. This creates a structural asymmetry in the problem. A general graph representation is no longer sufficient. Instead, we need to explicitly distinguish between patients and donors in the model to accurately capture the structure and constraints of the problem. An example of a graph with a patient having two donors is shown in \autoref{fig:model_example}.
-
-Throughout the thesis, we will use the second model—that is, the one that distinguishes between node types. In the diagrams, patients will be represented as circles and donors as squares. The compatible edges will be represented as solid arrows and proxy edges as dotted arrows.
+However, a more general scenario arises if we allow a patient to receive a kidney while all of their associated donors are permitted to donate simultaneously. We call this model \textit{multiple donors} model. How this model relates to other kidney exchange models is shown in \autoref{fig:models_hierarchy}. In this case, one of the donors may participate in an exchange cycle as usual, while other donor initiate a donation chains, effectively increasing the total number of transplants.
 
 \begin{figure}
     \centering
-    \includegraphics{data/model_example.pdf}
+    \includegraphics{data/models_hierarchy.pdf}
+    \caption[Hierarchy of kidney exchange models]{Hierarchy of kidney exchange models. Each successive set is a superset of the previous: patient-donor pairs form the core, extended by alternative donors, multiple donors, and finally clubs briefly mentioned in \autoref{sec:background_and_motivation}.}
+    \label{fig:models_hierarchy}
+\end{figure}
+
+In such settings, we observe that allowing chains to follow cycles can only improve social welfare—it never reduces the total number of transplants compared to \textit{patient-donor pairs} model. Moreover, this problem deviates from the classical graph matching framework: it is no longer a pure matching problem.
+
+Finally, we note that it is now possible for one donor to participate in a cycle while the second donor from the same patient initiates or joins a chain. This creates a structural asymmetry in the problem. A general graph representation is no longer sufficient. Instead, we need to explicitly distinguish between patients and donors in the model to accurately capture the structure and constraints of the problem. An example of a graph with a patient having two proxy donors is shown in \autoref{fig:multiple_model_example}.
+
+The \textit{multiple donors} model is a generalization of the \textit{alternative donors} model and therefore also accommodates groups consisting of a patient with alternative proxy donors. This case is handled in the same way as in the \textit{alternative donors} model—the donors are merged into a single node, as shown in \autoref{fig:alternative_model_example}.
+
+Throughout the thesis, we will use the \textit{multiple-donors} model—that is, the one that distinguishes between node types. We also restrict the model to the case where each patient have at most two proxy donors. In the diagrams, patients will be represented as circles and donors as squares. Compatibility edges will be represented as solid arrows and proxy edges as dotted arrows.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics{data/multiple_model_example.pdf}
     \caption[An example of a graph with a patient having two donors]{\textbf{(a)} is an example of a graph where a patient has two proxy donors. \textbf{(b)} illustrates that this allows the model to select the cycle $(p_2 \rightarrow d_2^2 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ (in orange) and the chain $(p_2 \rightarrow d_2^2 \rightarrow p_3)$ (in blue).}
-    \label{fig:model_example}
+    \label{fig:multiple_model_example}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics{data/alternative_model_example.pdf}
+    \caption[An example of a graph with a patient having two alternative donors]{\textbf{(a)} is an example of a graph where a patient has two alternative proxy donors. \textbf{(b)} shows that only the cycle $(p_2 \rightarrow d_2^2 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ is selected in the solution.}
+    \label{fig:alternative_model_example}
+  \end{minipage}
 \end{figure}
 
 \section{Formal Definitions}
-We model the problem as a directed graph $G(V, E)$. The set of vertices $V = P \cup D$ consists of two subsets, first representing patients $P$, second representing donors $D$. The set of edges consists of two subsets $E = E_{proxy} \cup E_{compatible}$:
+
+We formalize the \textit{multiple donors} model as a directed graph $G = (V, E)$, where the vertex set $V = P \cup D$ consists of two disjoint subsets: a set of patients $P$ and a set of donors $D$. The edge set $E$ is partitioned into two disjoint subsets, $E = E_{\mathrm{proxy}} \cup E_{\mathrm{compatible}}$, defined as follows:
 \begin{itemize}
-    \item the subset of edges $E_{proxy} \subseteq E$ contains edges $d \leftarrow p$ for some $d \in D$ and $p \in P$ indicating that donor $d \in D$ is a proxy donor of patient $p \in P$.
-    \item the subset of edges $E_{compatible} \subseteq E$ contains edges $p \leftarrow d$ indicating that a patient $p \in P$ is compatible with donor $d \in D$.
+    \item The set of \textit{proxy edges} $E_{\mathrm{proxy}} \subseteq P \times D$ contains an edge $(p, d)$ if donor $d \in D$ is a proxy donor of patient $p \in P$.
+    \item The set of \textit{compatibility edges} $E_{\mathrm{compatible}} \subseteq D \times P$ contains an edge $(d, p)$ if donor $d \in D$ is compatible with patient $p \in P$.
 \end{itemize}
-In this model, we assume that a donor who is a proxy for a patient cannot simultaneously be compatible with that same patient. Each patient may be compatible with multiple donors but can have at most two proxy donors. Each donor serves as a proxy for exactly one patient.\\
-The objective is to find subset of edges $E^{opt} \subseteq E$ such that:
-\begin{itemize}
-    \item $\forall p \in P, \left|\left\{ d : p \leftarrow d \in E^{opt}_{compatible} \right\}\right| \le 1$, that is, each patient receives at most one compatible kidney.
-    \item $\forall d \in D$ there exists an edge $ p \leftarrow d \in E^{opt}_{compatible}$ if and only if $p' \leftarrow d' \in E^{opt}_{compatible}$ and $d \leftarrow p' \in E_{proxy}$, in other words, a donor can be matched with a compatible patient only if their proxy patient also receives a compatible kidney.
-    \item the number of compatible edges $\left|E^{opt}_{compatible}\right|$ is maximized.
-\end{itemize}
+
+Each donor is a proxy for exactly one patient, and each patient has at most two proxy donors. We assume that no donor is compatible with their own associated patient, i.e., for all $(p, d) \in E_{\mathrm{proxy}}$, we have $(d, p) \notin E_{\mathrm{compatible}}$. If a patient reports his donors as \textit{alternative donors}, those donors are modeled as a single donor node. This node represents the whole set of alternative donors, and a compatibility edge exists if any of them is compatible with a patient.
+
+A solution is a subgraph $G^{\mathrm{opt}} = (V, E^{\mathrm{opt}})$ with $E^{\mathrm{opt}} \subseteq E$ satisfying the following constraints:
+\begin{enumerate}
+    \item \textbf{Patient receives at most one kidney:}  
+    Each patient receives at most one kidney from a compatible donor:  
+    \[
+        \forall p \in P, \quad \left| \{ d \in D : (d, p) \in E^{\mathrm{opt}}_{\mathrm{compatible}} \} \right| \le 1.
+    \]
+    \item \textbf{Donor donates only if proxy patient is matched:}  
+    A donor $d$ may donate a kidney for some patient $p$ if and only if his associated patient $p'$ also receives a compatible kidney, i.e.,  
+    \[
+        (d, p) \in E^{\mathrm{opt}}_{\mathrm{compatible}} \iff (p', d) \in E_{\mathrm{proxy}} \text{ and } \exists (d', p') \in E^{\mathrm{opt}}_{\mathrm{compatible}}.
+    \]
+    \item \textbf{Objective:}  
+    The total number of transplants is maximized, i.e.,  
+    \[
+        E^{\mathrm{opt}}_{\mathrm{compatible}} = \underset{E' \subseteq E_{\mathrm{compatible}}}{\mathrm{argmax}} \left| E' \right|
+    \]
+    subject to the above constraints.
+\end{enumerate}
 
 \section{Problems Variants}
 
@@ -45,7 +79,7 @@ The model introduced above captures the essential structure of multi-donor kidne
 
 As a starting point, consider the most general setting, where no restrictions are imposed on the length of exchange cycles or donation chains. Given a directed graph $G = (V = P \cup D, E)$, all subsets of edges that satisfy the feasibility constraints described earlier are considered valid solutions. We refer to this formulation as the \textit{Unbounded Multi-Donor Exchange Problem}.
 
-We then consider a more constrained version, where limits are placed on the maximum allowed lengths of cycles and chains. Specifically, in the \textit{$n$-Cycle $m$-Chain Problem}, only subsets in which all cycles have length at most $n$ and all chains have length at most $m$ are considered valid. Here, the length refers to the number of compatible edges the cycle or the chain contains. Returning to the example from \autoref{fig:model_example}, the cycle has length $2$ and the chain has length $1$.
+We then consider a more constrained version, where limits are placed on the maximum allowed lengths of cycles and chains. Specifically, in the \textit{$n$-Cycle $m$-Chain Problem}, only subsets in which all cycles have length at most $n$ and all chains have length at most $m$ are considered valid. Here, the length refers to the number of compatible edges the cycle or the chain contains. Returning to the example from \autoref{fig:multiple_model_example}, the cycle has length $2$ and the chain has length $1$.
 
 
 
