@@ -1,6 +1,51 @@
 \chapter{Preliminaries}
 \label{cha:preliminaries}
 
+% Note that even in Preliminaries, we still should cite some textbook or paper.
+
+% Section on graph basics and terminology
+\section{Graph-Theoretic Foundations}
+% Define basic graph concepts: nodes, edges, matching, etc.
+
+
+% Section on computational complexity and related problems
+\section{Computational Complexity and Related Problems}
+% Introduce NP-completeness and approximation concepts
+
+% Section on mechanism design and truthfulness
+\section{Mechanism Design and Incentive Compatibility}
+% Explain DSIC and relevance to kidney exchange
+
+In this section, we briefly introduce key concepts from mechanism design theory that are relevant to our work. More details can be found in standard references such as \cite{Roughgarden_2016}.
+
+\subsection*{Mechanism Design Basics}
+
+Mechanism design studies how to construct rules or systems (mechanisms) that lead rational agents to act in a desirable way, typically by reporting private information truthfully. In the context of kidney exchange, each participant (i.e., patient and donor) may possess private information about their available donors or compatibility relationships. The goal is to design a mechanism that selects a socially desirable matching while incentivizing agents to report truthfully.
+
+Formally, let $\mathcal{A}$ denote the set of all agents (e.g., patients), and let each agent $i \in \mathcal{A}$ have a private type $\theta_i$ (e.g., their available donors). A mechanism consists of:
+\begin{itemize}
+    \item A message space $S_i$ for each agent $i$, where $s_i \in S_i$ is the reported type (which may differ from the true type $\theta_i$);
+    \item An allocation function $f : S_1 \times \cdots \times S_n \rightarrow \mathcal{O}$, which maps reported types to an outcome (e.g., a matching of patients to donors).
+\end{itemize}
+
+In our setting, the allocation function—essentially the algorithm that takes reports as input and produces a matching as output—is the central object of interest. In most cases, the primary design goal is to maximize social welfare, typically measured by the number of patients who receive a kidney.
+
+\subsection*{Incentive Compatibility and Truthfulness}
+
+A mechanism is said to be \textit{truthful}  or \textit{dominant-strategy incentive compatible (DSIC)} or \textit{Strategyproof}, if reporting truthfully is always in each agent's best interest, regardless of what the other agents report. Formally, for all agents $i$, all true types $\theta_i$, and all possible misreports $s_i' \in S_i$, we require:
+
+\[
+u_i(f(\theta_i, s_{-i})) \geq u_i(f(s_i', s_{-i})),
+\]
+
+where $u_i$ is the utility function of agent $i$, and $s_{-i}$ denotes the reports of all other agents.
+
+In patient-donor-pair kidney exchange, the utility function is typically binary: an agent either receives a kidney (utility 1) or does not (utility 0). This binary nature introduces strategic complexity—agents may be incentivized to misreport available donors if doing so improves their chance of being matched.
+
+To summarize, our allocation algorithm ideally satisfies three goals: (i) truthfulness (DSIC), (ii) maximizing social welfare, and (iii) computational efficiency (i.e., running in polynomial time).
+
+
 - proxy donor
 - alternative donors
 - compatible patient/donor
+

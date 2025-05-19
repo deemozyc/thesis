@@ -1,12 +1,49 @@
 \chapter{Incentives and Truthfulness}
 \label{cha:incentives_and_truthfulness}
 
+
+\section{Motivating Example: Incentives to Report Multiple Donors}
+\label{sec:incentives}
+
+Let's begin by defining the incentives of each patient-donor group. Naturally, the primary goal of each group is to obtain a compatible kidney for the associated patient. Secondarily, each group aims to minimize its loss—i.e., the number of proxy kidneys it gives up in exchange for a compatible kidney. This leads to the following ranking of possible outcomes for each group, ordered from most to least desirable:
+
+\begin{enumerate}
+\item Receive one compatible kidney and lose 0 proxy kidneys.
+\item Receive one compatible kidney and lose 1 proxy kidney.
+\item Receive one compatible kidney and lose 2 proxy kidneys.
+\item Receive no compatible kidney and lose 0 proxy kidneys.
+\end{enumerate}
+
+Note that we do not consider a case where a group receives no compatible kidney but still loses a proxy kidney. If that was the outcome for some group, the groups would simply refuse to participate. Furthermore, if a group chooses to participate as an alternative-donors group, the third outcome is not taken as an option for this group.
+
+It is not immediately obvious whether participating in the \textit{multiple-donors} program provides any advantage for a patient-donor group compared to participating in the \textit{alternative-donors} program. The example in \autoref{fig:incentive_motivation_example2} clarifies this question. In \textbf{(a)}, we see an example graph where patient $p_1$ has two proxy donors: $d_1^1$ and $d_1^2$. The graph includes two overlapping cycles: one of length two that includes $p_1$, and another of length three that does not. In the solution, only one of these cycles can be selected.
+
+If patient $p_1$ chooses to report their donors as alternative donors, $d_1^1 \oplus d_1^2$, then the system (which maximizes the number of transplants) will select the longer cycle (the orange one in \textbf{(b)}), resulting in $p_1$ not receiving a compatible kidney. On the other hand, if $p_1$ is willing to use both proxy donors, then—as shown in \textbf{(c)}—the system will select the cycle of length two that includes $p_1$ and the chain initiated by $d_1^2$, also of length two, saving a total of four patients.
+
+This scenario is not far removed from real life. Imagine that $p_1$ is a child in need of a kidney transplant, and $d_1^1$ and $d_1^2$ are the child’s parents—both incompatible with the child but willing to do anything to help. The \textit{multiple-donors} model opens new possibilities for such groups in these situations.
+
 \begin{figure}
     \centering
-    \includegraphics{data/incentive_motivation_example.pdf}
-    \caption[An example showing the benefit of reporting two proxy donors in multiple-donors model]{\textbf{(a)} shows an example of a graph containing two overlapping cycles, where the left cycle contains patient $p_1$ which has two proxy donors: $d_1^1$ and $d_1^2$. \textbf{(b)} shows the output of the multiple-donors model when patient $p_1$ decides to report one of his proxy donors $d_1^1$. \textbf{(c)} shows the output of the multiple-donors model when $p_1$ reports both proxy donors.}
-    \label{fig:incentive_motivation_example}
+    \includegraphics{data/incentive_motivation_example2.pdf}
+    \caption[An example showing the benefit of reporting two proxy donors in multiple-donors model]{\textbf{(a)} shows an example of a graph containing two overlapping cycles, where the left cycle contains patient $p_1$ which has two proxy donors: $d_1^1$ and $d_1^2$. In \textbf{(b)} patient $p_1$ reports his donors as alternative donors $d_1^1 \oplus d_1^2$ and in result don't receive a compatible kidney. \textbf{(c)} shows that by reporting two proxy donors in the multiple-donors model, patient $p_1$ receives a compatible kidney in exchange for two proxy kidneys.}
+    \label{fig:incentive_motivation_example2}
 \end{figure}
+
+\section{Truthfulness in the multiple-donors model}
+Unfortunately, the \textit{multiple-donors} model, together with the incentives discussed in \autoref{sec:incentives}, forces patients to act strategically. The question every patient will ask themselves is whether they should report all donors. If they report two donors, they risk both donors losing their kidneys, while in reality, reporting only one might be sufficient for the patient to receive a kidney.  Ideally, no group should be able to benefit from spying on which donors other group report, and reporting all available donors should be weakly-dominant strategy.
+
+We consider two types of truthfulness:
+\begin{enumerate}
+    \item \textbf{Strong truthfulness}, where for each group, donating more proxy kidneys implies receiving strictly more compatible kidneys. Or in other words, in order to achieve strong-truthfulness, the system should take two proxy kidneys from a group if and only if taking one of the proxy kidneys wouldn't result in the patient of the group receiving a compatible kidney.
+    \item \textbf{Weak truthfulness}, where for each group, reporting more proxy donors implies receiving at least as many compatible kidneys. That is, if a group reports only one proxy donor and receives a compatible kidney, then the same group would also receive a compatible kidney if it reported more proxy donors.
+\end{enumerate}
+Of course, strong truthfulness implies weak truthfulness, but not vice versa.
+
+\subsection{Strong truthfulness}
+
+It is clear that \textit{multiple-donors} model cannot be social-welfare maximizing and strongly truthful at the same time. Assume that the model aims to maximize number of patients saved and consider an example from \autoref{fig:multiple_model_example}, where patient $p_2$ reports both of his proxies; $d_2^1$ and $d_2^2$, and is able to get a compatible kidney from $d_1$. If patient $p_1$ decides to hide donor $d_2^2$, he gets a kidney from $d_1$ as well but this time looses only one proxy kidney from donor $d_2^1$.
+
+Moreover, knowing the structure of the graph in social-welfare maximizing model gives player an advantage, this is perfectly depicted in \autoref{fig:prisoners_dilemma} which shows two patients being in the Prisoner's Dilemma situation. In the example, two patients $p_1$ and $p_2$ have two proxy donors; $d_1^2$, $d_2^2$ and $d_2^1$, $d_2^2$ respectively. Both patients are in the same cycle of length 3 which overlaps with a larger one of length 4. If both decide to only report one of their donors (as shown in \textbf{(b)}), the larger cycle is selected in the solution, and both patients end up without compatible kidney. If both decide to report all of theirs donors (see \textbf{(c)}), the smaller cycle is selected together with two chains, each of length 2, summing up to 7 patients saved. In this case both patients receive a compatible kidney but at the same time both lose two of theirs proxy donors. If patient $p_1$ knows the structure of the graph and knows that $p_2$ will report two of his donors, then, he can decide to hide donor $d_1^2$ (see \textbf{(d)}). In that case, small cycle is selected together with one chain on length 2 initiated by $d_2^2$ summing up to total 5 patients saved. Notably, patient $p_1$ received a compatible kidney and spent only one of his donors, while, $p_2$ spent two of his proxies.
 
 
 \begin{figure}
@@ -16,6 +53,46 @@
     \label{fig:prisoners_dilemma}
 \end{figure}
 
+\subsection{Weak truthfulness}
+
+
+
+
+\section{Achieving Truthfulness via Randomized Mechanisms}
+
+As discussed earlier, no deterministic algorithm can simultaneously guarantee both truthfulness and maximum social welfare in our setting. The core issue is that if a patient can obtain a kidney by reporting only one donor, they have no incentive to report both; the additional donor does not improve their utility. This misalignment can be mitigated by introducing randomness into the mechanism.
+
+The key idea is to shift the notion of utility: instead of a binary outcome (receiving a kidney or not), we consider the probability of receiving a kidney as the utility. This enables a simple incentive structure: the more donors a patient truthfully reports, the higher their probability of being matched.
+
+Suppose we have a (possibly approximate) algorithm or oracle $O$ that solves the maximum social welfare problem with approximation ratio $T$, where $T \leq 1$, but is not truthful. We can construct a randomized algorithm $R$ that is truthful, using the following procedure:
+
+\begin{enumerate}
+    \item Run the original algorithm $O$ and obtain its output.
+    \item Let the output include $n$ patients, and suppose these patients have collectively reported $m$ donors. Let $\epsilon > 0$ be a small constant.
+    \item Return the output of $O$ with probability $1 - (2n - m)\epsilon$; otherwise (with probability $(2n - m)\epsilon$), return an empty allocation.
+\end{enumerate}
+
+The expected performance of $R$ satisfies:
+\[
+\lim_{\epsilon \to 0^+} \frac{\mathbb{E}[R]}{O} = 1 - (2n - m)\epsilon = 1,
+\]
+implying that the randomized algorithm $R$ achieves nearly the same performance as $O$ when $\epsilon$ is small.
+
+The underlying intuition is straightforward: the key factor for incentive alignment is whether a patient receives a kidney. In the randomized mechanism, patients are incentivized to report as many valid donors as possible. The more donors they report, the smaller the quantity $(2n - m)$ becomes, thereby reducing the probability that the output is discarded and increasing their expected utility.
+
+\begin{lemma}
+Let $O$ be a (possibly approximate) algorithm that is weakly truthful. Then the randomized mechanism $R$ constructed as described is dominant-strategy incentive compatible (DSIC).
+\end{lemma}
+
+\begin{proof}
+(Proof sketch) To show that the randomized mechanism $R$ is DSIC, consider a report profile $s$ in which all patients report truthfully, and let patient $i$ report both of their available donors. Let $s_{-i}$ denote a modified report where patient $i$ misreports by reporting only one of the two donors.
+
+Suppose first that, under $s_{-i}$, patient $i$ receives a kidney in the output of algorithm $O$. Since $O$ is weakly truthful, patient $i$ would also receive a kidney under $s$. Therefore, in the randomized mechanism $R$, the probability that patient $i$ receives a kidney under $s$ is strictly higher than under $s_{-i}$, since the value $(2n - m)$ is smaller when both donors are reported. That is, $R(s)$ has a higher expected utility than $R(s_{-i})$.
+
+Now suppose that under $s_{-i}$, patient $i$ does not receive a kidney in $O$. In that case, reporting both donors cannot result in a worse outcome under $R$, and may result in a better one. In both scenarios, truthful reporting yields weakly higher expected utility.
+
+Thus, for every patient, reporting all available donors is a dominant strategy in the randomized mechanism $R$, and therefore $R$ is DSIC.
+\end{proof}
 
 %%% Local Variables:
 %%% mode: latex

@@ -11,10 +11,13 @@ Extending the model to the version where each patient is associated with multipl
 
 However, a more general scenario arises if we allow a patient to receive a kidney while all of their associated donors are permitted to donate simultaneously. We call this model \textit{multiple donors} model. How this model relates to other kidney exchange models is shown in \autoref{fig:models_hierarchy}. In this case, one of the donors may participate in an exchange cycle as usual, while other donor initiate a donation chains, effectively increasing the total number of transplants.
 
+
+
+
 \begin{figure}
     \centering
     \includegraphics{data/models_hierarchy.pdf}
-    \caption[Hierarchy of kidney exchange models]{Hierarchy of kidney exchange models. Each successive set is a superset of the previous: patient-donor pairs form the core, extended by alternative donors, multiple donors, and finally clubs briefly mentioned in \autoref{sec:background_and_motivation}.}
+    \caption[Hierarchy of kidney exchange models]{Hierarchy of kidney exchange models. Each successive set is a superset of the previous: patient-donor pairs form the core, extended by alternative donors, multiple donors, and finally clubs briefly mentioned in \autoref{sec:background_and_motivation}.\textcolor{red}{TODO check the club model is a sup model of all others or not}}
     \label{fig:models_hierarchy}
 \end{figure}
 
@@ -31,14 +34,14 @@ Throughout the thesis, we will use the \textit{multiple-donors} model—that is,
   \begin{minipage}[t]{0.48\textwidth}
     \centering
     \includegraphics{data/multiple_model_example.pdf}
-    \caption[An example of a graph with a patient having two donors]{\textbf{(a)} is an example of a graph where a patient has two proxy donors. \textbf{(b)} illustrates that this allows the model to select the cycle $(p_2 \rightarrow d_2^2 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ (in orange) and the chain $(p_2 \rightarrow d_2^2 \rightarrow p_3)$ (in blue).}
+    \caption[An example of a graph with a patient having two donors]{\textbf{(a)} is an example of a graph where a patient has two proxy donors. \textbf{(b)} illustrates that this allows the model to select the cycle $(p_2 \rightarrow d_2^1 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ (in orange) and the chain $(p_2 \rightarrow d_2^2 \rightarrow p_3)$ (in blue).}
     \label{fig:multiple_model_example}
   \end{minipage}
   \hfill
   \begin{minipage}[t]{0.48\textwidth}
     \centering
     \includegraphics{data/alternative_model_example.pdf}
-    \caption[An example of a graph with a patient having two alternative donors]{\textbf{(a)} is an example of a graph where a patient has two alternative proxy donors. \textbf{(b)} shows that only the cycle $(p_2 \rightarrow d_2^2 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ is selected in the solution.}
+    \caption[An example of a graph with a patient having two alternative donors]{\textbf{(a)} is an example of a graph where a patient has two alternative proxy donors. \textbf{(b)} shows that only the cycle $(p_2 \rightarrow d_2^1 \rightarrow p_1 \rightarrow d_1 \rightarrow p_2)$ is selected in the solution.}
     \label{fig:alternative_model_example}
   \end{minipage}
 \end{figure}
@@ -65,13 +68,14 @@ A solution is a subgraph $G^{\mathrm{opt}} = (V, E^{\mathrm{opt}})$ with $E^{\ma
     \[
         (d, p) \in E^{\mathrm{opt}}_{\mathrm{compatible}} \iff (p', d) \in E_{\mathrm{proxy}} \text{ and } \exists (d', p') \in E^{\mathrm{opt}}_{\mathrm{compatible}}.
     \]
-    \item \textbf{Objective:}  
-    The total number of transplants is maximized, i.e.,  
-    \[
-        E^{\mathrm{opt}}_{\mathrm{compatible}} = \underset{E' \subseteq E_{\mathrm{compatible}}}{\mathrm{argmax}} \left| E' \right|
-    \]
-    subject to the above constraints.
 \end{enumerate}
+
+As mentioned in Chapter~\ref{cha:preliminaries}, our goal is to design algorithms for this model that ideally satisfy the following three properties:  
+(i) truthfulness (DSIC),  
+(ii) maximization of social welfare, and  
+(iii) computational efficiency.
+
+For the goal of maximizing social welfare, it is also acceptable to obtain a constant-factor approximation algorithm.
 
 \section{Problems Variants}
 
@@ -83,10 +87,21 @@ We then consider a more constrained version, where limits are placed on the maxi
 
 
 
-\section{Alternative Interpretations (Zhang)}
+\section{Alternative Interpretations}
 
+The problem we consider has a structured, graph-like nature, but involves two distinct types of nodes: patients and donors. This subsection explores how our model relates to several classical problem frameworks.
 
+\textcolor{red}{TODO add chapter hyperlink when finished all chapters}
 
+At first glance, the problem appears similar to a general graph problem in which all nodes are treated identically. For example, one may consider the following: given an unweighted, undirected graph $G = (V, E)$, the goal is to find a collection of disjoint cycles, possibly followed by chains initiated from selected cycles. However, despite this superficial resemblance, our problem differs fundamentally.
+
+First, our model is inherently structured—nodes have semantic roles (patients or donors), which affect both the feasibility of edges and the interpretation of cycles and chains. In contrast, classical graph formulations make no such distinctions. Second, the feasibility of a solution in our setting depends not only on the graph topology but also on the role-based constraints imposed by the kidney exchange context.
+
+Therefore, while our model overlaps in spirit with certain general graph problems, it is neither equivalent to nor a strict subproblem of them. Nevertheless, some of the techniques or insights developed in our setting are applicable to more general problems, and we will return to this point in later sections.
+
+An alternative interpretation views our problem as a special case of the weighted set packing problem. Each feasible subset corresponds to a valid cycle or cycle with chains, with the constraint that no element (e.g., patient or donor) can be used more than once. The objective is to select a collection of disjoint subsets (exchanges), maximizing the total number of patients matched — this defines the weight of each subset. We will adopt this view to design a randomized algorithm later in the paper.
+
+Finally, our problem can also be modelled as an integer linear program (ILP), inspired by the set packing formulation. In the experimental section, we implement and solve such an ILP to evaluate the performance of our approach in practice.
 
 
 %%% Local Variables:
