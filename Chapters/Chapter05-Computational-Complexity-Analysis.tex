@@ -1,0 +1,103 @@
+\chapter{Computational Complexity Analysis}
+\label{cha:computational_complexity_analysis}
+
+This chapter investigates the computational complexity of the algorithmic problems introduced in our multi-donor kidney exchange model. We formalize the decision versions of these problems and show that they are NP-complete, even under seemingly simple constraints.
+
+We begin by presenting several variants of the problem that differ in the allowed structure of exchanges—such as the maximum length of cycles and whether chains are permitted. We then prove that all of these variants are computationally intractable via reductions from known NP-complete problems. These results motivate the need for approximation algorithms and heuristic methods, which will be discussed in later chapters.
+
+\section{Problem Variants and Overview of Results}
+
+All problem variants considered in this chapter revolve around structural constraints imposed on the kidney exchange process—specifically, limitations on the maximum length of allowed exchange cycles and chains.
+
+We begin by showing that for any fixed constant $k \ge 2$, the decision version of the \textsc{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete. This result is established via a reduction from the \textsc{Longest Path from Fixed Source} problem.
+
+Subsequently, we consider an even more restricted setting where only 2-cycles and 1-chains are permitted. Despite the simplicity of this variant, we show that the corresponding decision problem remains NP-complete, using a reduction from the \textsc{2P2N 3-SAT} problem.
+
+
+
+\section{Reduction from Longest Path}
+
+In this section, we formally establish the computational hardness of the matching problems defined in our multi-donor kidney exchange model. Specifically, we show that even under simple structural constraints—such as allowing only one 2-cycle and unrestricted chains—the decision version of the problem remains NP-complete. 
+
+Our proofs are based on a polynomial-time reduction from the well-known \textsc{Longest Path from Fixed Source} problem in directed graphs.
+
+\subsection{NP-completeness of the 2-Cycle Unbounded-Chain Problem}
+
+Here we show that the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is at least as hard as the \textsc{Longest Simple Path in Directed Graph} problem.
+
+To establish NP-completeness, we reduce from the well-known \textsc{Longest Path from Fixed Source} problem (Problem~\ref{prob:longest_simple_path}). Given an instance $(G, s, k)$ of that problem, we construct an instance of our problem such that a solution to our problem implies a solution to the original one.
+
+\begin{lemma}
+The decision version of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
+\end{lemma}
+
+\begin{proof}[Proof Sketch]
+\textcolor{red}{TODO add an image example here later}
+
+We prove NP-hardness by reduction from the \textsc{Longest Path from Fixed Source} problem. Given a directed graph $G = (V, E)$, a designated source node $s$, and an integer $k$, we construct an instance of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} such that there exists a solution saving at least $3 + 2k$ patients if and only if there exists a simple path of length at least $k$ starting from $s$ in $G$.
+
+To construct the kidney exchange instance, we begin by adding a single 2-cycle between two patients, where one of the patients is associated with two donors: one donor participates in the 2-cycle, and the other is compatible with the patient corresponding to node $s$ in $G$. This setup initiates the only possible chain in the instance.
+
+Next, for each vertex $v \in V$, we create a corresponding patient. For every directed edge $(a, b) \in E$, we introduce a new intermediate patient labeled $ab$. We then assign a donor to patient $a$ who is compatible with patient $ab$, and a donor to patient $ab$ who is compatible with patient $b$. This models each edge as a two-step donation chain segment.
+
+In the resulting kidney exchange instance, only the single 2-cycle we constructed initially is eligible to be selected under the problem constraints. Chains can only be initiated from this 2-cycle and must respect donor compatibility. Since all other potential cycles in the graph (formed via edge constructions) involve at least four patients, no other 2-cycles exist in the instance.
+
+Therefore, maximizing the number of patients who receive a kidney corresponds to finding the longest simple path in $G$ starting from $s$. Each edge in $G$ contributes two transplantations (through the $ab$ intermediate patient), and the initial 2-cycle saves one patient, plus one more as the entry to the chain. Hence, the total number of patients saved is at least $3 + 2k$ if and only if there exists a simple path of length at least $k$ in the original graph.
+
+Membership in NP is immediate, since a proposed matching (i.e., a set of selected cycles and chains) can be verified in polynomial time.
+\end{proof}
+
+\subsection{Extensions to \texorpdfstring{$k$}{k}-Cycle Constraints}
+
+We now extend the previous hardness result to two broader settings. The first generalizes the cycle constraint from length 2 to an arbitrary constant $k \ge 2$, and the second considers a related class of general graph-based matching problems.
+
+\begin{lemma}
+For any fixed constant $k \ge 2$, the decision version of the \textsc{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
+\end{lemma}
+
+\begin{proof}[Proof Sketch]
+The proof follows a similar reduction as in the 2-cycle case, with a crucial modification: instead of constructing a 2-cycle to initiate the chain, we construct a cycle of length exactly $k$. We ensure that this is the only cycle in the constructed instance whose length is at most $k$.
+
+To achieve this, we modify the edge gadgets from the original reduction. Each edge $(a, b)$ is now represented by an expanded chain segment, composed of additional intermediate patients and donors, such that any cycles inadvertently formed from these components are of length strictly greater than $k$. This guarantees that under the $k$-cycle constraint, the only valid cycle is the one we intentionally constructed for initiating the chain.
+
+Thus, as in the 2-cycle case, any feasible solution must rely on a single chain starting from the constructed $k$-cycle. The total number of patients that can be served remains a function of the chain's length, which in turn corresponds to the length of a simple path in the original graph. Therefore, the reduction remains valid for arbitrary fixed $k$.
+\end{proof}
+
+\begin{lemma}
+The reduction can be adapted to show that a more general graph-based problem—maximizing disjoint cycles and chains in an undirected, unweighted graph—is also NP-complete.
+\end{lemma}
+
+\begin{proof}[Proof Sketch]
+As mentioned in Section~\ref{cha:problem_formulation}, consider a general graph-based matching problem where the input is an undirected, unweighted graph $G = (V, E)$, and the goal is to select a collection of disjoint cycles, possibly followed by chains initiated from selected cycles.
+
+Although this formulation does not match the kidney exchange model exactly, the core reduction strategy still applies. We can similarly restrict the construction such that only one cycle is eligible under the length constraint, and the remainder of the solution must be formed as a chain. Thus, the number of selected vertices still reflects the length of a simple path in the original graph. The same gadget design principles apply in this context, allowing us to extend the NP-completeness result to this generalized setting.
+\end{proof}
+
+
+
+
+\section{Reduction from SAT}
+
+We now show that even in the highly constrained setting where only a single 2-cycle and a single chain are allowed, the problem remains computationally hard. The result is established via a reduction from the well-known \textsc{3-SAT} problem.
+
+\begin{lemma}
+The decision version of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
+\end{lemma}
+
+\begin{proof}[Proof Sketch]
+We prove NP-hardness by reduction from the \textsc{3-SAT} problem. Given a Boolean formula in conjunctive normal form with three literals per clause, we construct a corresponding instance of the kidney exchange problem such that the formula is satisfiable if and only if there exists a feasible matching that uses at most one 2-cycle and one chain, and saves at least a specified number of patients.
+
+The construction involves designing special gadgets to represent variables and clauses. 
+
+\textcolor{red}{TODO add the image of garget later}
+
+\end{proof}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../ClassicThesis"
+%%% ispell-dictionary: "british" ***
+%%% fill-column: 76 ***
+%%% End:

@@ -30,20 +30,29 @@ This scenario is not far removed from real life. Imagine that $p_1$ is a child i
 \end{figure}
 
 \section{Truthfulness in the multiple-donors model}
-Unfortunately, the \textit{multiple-donors} model, together with the incentives discussed in \autoref{sec:incentives}, forces patients to act strategically. The question every patient will ask themselves is whether they should report all donors. If they report two donors, they risk both donors losing their kidneys, while in reality, reporting only one might be sufficient for the patient to receive a kidney.  Ideally, no group should be able to benefit from spying on which donors other group report, and reporting all available donors should be weakly-dominant strategy.
+Unfortunately, the \textit{multiple-donors} model, together with the incentives discussed in \autoref{sec:incentives}, forces patients to act strategically. The question every patient will ask themselves is whether they should report all donors. If they report two donors, they risk both donors losing their kidneys, while in reality, reporting only one might be sufficient for the patient to receive a kidney.  Ideally, no group should be able to benefit from spying on which donors other group report, and reporting all available donors should be weakly-dominant strategy. We consider two types of truthfulness.
 
-We consider two types of truthfulness:
-\begin{enumerate}
-    \item \textbf{Strong truthfulness}, where for each group, donating more proxy kidneys implies receiving strictly more compatible kidneys. Or in other words, in order to achieve strong-truthfulness, the system should take two proxy kidneys from a group if and only if taking one of the proxy kidneys wouldn't result in the patient of the group receiving a compatible kidney.
-    \item \textbf{Weak truthfulness}, where for each group, reporting more proxy donors implies receiving at least as many compatible kidneys. That is, if a group reports only one proxy donor and receives a compatible kidney, then the same group would also receive a compatible kidney if it reported more proxy donors.
-\end{enumerate}
-Of course, strong truthfulness implies weak truthfulness, but not vice versa.
+\begin{definition}[Truthfulness]
+We say a kidney exchange mechanism is \emph{truthful} if, for each group, donating more proxy kidneys implies receiving strictly more compatible kidneys. In other words, to satisfy truthfulness, the system should take two proxy kidneys from a group if and only if taking one of the proxy kidneys would not result in the patient of the group receiving a compatible kidney.
+\end{definition}
 
-\subsection{Strong truthfulness}
+\begin{definition}[Weak Truthfulness]
+We say a kidney exchange mechanism is \emph{weakly truthful} if, for each group, reporting more proxy donors implies receiving at least as many compatible kidneys. That is, if a group reports only one proxy donor and receives a compatible kidney, then the same group would also receive a compatible kidney if it reported more proxy donors.
+\end{definition}
 
-It is clear that \textit{multiple-donors} model cannot be social-welfare maximizing and strongly truthful at the same time. Assume that the model aims to maximize number of patients saved and consider an example from \autoref{fig:multiple_model_example}, where patient $p_2$ reports both of his proxies; $d_2^1$ and $d_2^2$, and is able to get a compatible kidney from $d_1$. If patient $p_1$ decides to hide donor $d_2^2$, he gets a kidney from $d_1$ as well but this time looses only one proxy kidney from donor $d_2^1$.
+Of course, truthfulness implies weak truthfulness, but not vice versa.
 
-Moreover, knowing the structure of the graph in social-welfare maximizing model gives player an advantage, this is perfectly depicted in \autoref{fig:prisoners_dilemma} which shows two patients being in the Prisoner's Dilemma situation. In the example, two patients $p_1$ and $p_2$ have two proxy donors; $d_1^2$, $d_2^2$ and $d_2^1$, $d_2^2$ respectively. Both patients are in the same cycle of length 3 which overlaps with a larger one of length 4. If both decide to only report one of their donors (as shown in \textbf{(b)}), the larger cycle is selected in the solution, and both patients end up without compatible kidney. If both decide to report all of theirs donors (see \textbf{(c)}), the smaller cycle is selected together with two chains, each of length 2, summing up to 7 patients saved. In this case both patients receive a compatible kidney but at the same time both lose two of theirs proxy donors. If patient $p_1$ knows the structure of the graph and knows that $p_2$ will report two of his donors, then, he can decide to hide donor $d_1^2$ (see \textbf{(d)}). In that case, small cycle is selected together with one chain on length 2 initiated by $d_2^2$ summing up to total 5 patients saved. Notably, patient $p_1$ received a compatible kidney and spent only one of his donors, while, $p_2$ spent two of his proxies.
+\subsection{Truthfulness}
+\begin{lemma}
+    \label{lemma:social_walfare_not_strongly_truthful}
+    Social-welfare maximizing multiple donor model is not truthful.
+    \begin{proof}
+        Let there be an algorithm $A$ solving \textit{social-welfare maximizing multiple donors} model and consider the example graph from \autoref{fig:multiple_model_example}. In the example, if patient $p_2$ reports both of his proxies; $d_2^1$ and $d_2^2$, $A$ assigns him a compatible kidney from $d_1$ in exchange for two proxy donors. On the other hand, if patient $p_1$ decides to hide donor $d_2^2$, $A$ assigns him a kidney from $d_1$ in exchange for only one proxy kidney $d_2^1$.
+    \end{proof}
+\end{lemma}
+
+
+Moreover, knowing the structure of the graph in the social-welfare maximizing model gives player an advantage, this is perfectly depicted in \autoref{fig:prisoners_dilemma} which shows two patients being in the Prisoner's Dilemma situation. In the example, two patients $p_1$ and $p_2$ have two proxy donors; $d_1^2$, $d_2^2$ and $d_2^1$, $d_2^2$ respectively. Both patients are in the same cycle of length 3 which overlaps with a larger one of length 4. If both decide to only report one of their donors (as shown in \textbf{(b)}), the larger cycle is selected in the solution, and both patients end up without compatible kidney. If both decide to report all of theirs donors (see \textbf{(c)}), the smaller cycle is selected together with two chains, each of length 2, summing up to 7 patients saved. In this case both patients receive a compatible kidney but at the same time both lose two of theirs proxy donors. If patient $p_1$ knows the structure of the graph and knows that $p_2$ will report two of his donors, then, he can decide to hide donor $d_1^2$ (see \textbf{(d)}). In that case, small cycle is selected together with one chain on length 2 initiated by $d_2^2$ summing up to total 5 patients saved. Notably, patient $p_1$ received a compatible kidney and spent only one of his donors, while, $p_2$ spent two of his proxies.
 
 
 \begin{figure}
@@ -54,8 +63,49 @@ Moreover, knowing the structure of the graph in social-welfare maximizing model 
 \end{figure}
 
 \subsection{Weak truthfulness}
+When it comes to weak truthfulness, not every algorithm that solves the social-welfare maximizing multiple donor problem possesses this property. This is demonstrated in the following lemma.
+
+\begin{lemma}
+\label{lemma:weak_truthfulness_false}
+    Not every algorithm solving the social-welfare maximizing multiple donors model has weak truthfulness property.
+    \begin{proof}
+        Consider, for example, the simple graph illustrated in \autoref{fig:weak_truthfulness}, and let us examine an algorithm $A$ that solves the model without a consistent tie-breaking rule. That is, if there are multiple optimal solutions, the algorithm deterministically\footnote{Here, \textit{deterministically} means that given the same graph twice, the algorithm will always return the same solution for both instances.} returns one of them arbitrarily.
+    
+        In this example, patient-donor groups form two overlapping cycles, each of length two. The algorithm can select only one of these cycles in its solution. Suppose $A$ selects the left cycle, as shown in \textbf{(a)}, thereby assigning a compatible kidney to patient $p_1$. In \textbf{(b)}, the same patient $p_1$ reports an additional proxy donor $d_1^2$, who is not compatible with any patient in the graph. Although this addition does not affect the number of patients that can be saved, it changes the structure of the graph and may cause $A$ to select the right cycle instead, which does not include $p_1$.
+    \end{proof}
+\end{lemma}
+
+The proof of the previous lemma shows that inconsistent tie-breaking is the reason an algorithm may fail to be weakly truthful. In the next lemma, we show that an algorithm with an arbitrary consistent tie-breaking rule is weakly truthful. Before  we do that, let's define what consistent tie-breaking even means.
+
+\begin{definition}[Consistent tie-breaking rule]
+    Given the set $S_k$ of all solutions that achieve the same score $k$ (i.e., the same number of patients saved), a consistent tie-breaking rule imposes a strict, arbitrary ordering over $S_k$ that is independent of the reports provided by patient-donors groups. For any input graph $G$ where the maximum number of patients that can be saved is $k$, the rule selects the highest-ranked valid solution from $S_k$ according to this fixed ordering.
+\end{definition}
+
+A particularly appealing consistent tie-breaking rule is based on assigning priorities among the patients, similar to how waiting lists for kidneys from deceased donors are handled. In such lists, patients are ranked according to a fixed priority score that reflects medical urgency, ethical considerations, or logistical factors. When a kidney becomes available, it is allocated to the highest-priority patient among those compatible with the organ. Translating this idea to our mechanism design setting, we can impose a consistent tie-breaking rule by predefining a strict priority ordering over the agents. When multiple allocations yield the same utility, the tie is broken in favor of the allocation that benefits the agent with the highest priority.
+
+\begin{lemma}
+    An algorithm with a consistent tie-breaking rule solving the social-welfare maximizing multiple donors model is weakly truthful.
+    \begin{proof}
+    Let $A$ be an algorithm with a consistent tie-breaking rule that solves the social-welfare maximizing multiple donors model, and consider an arbitrary graph $G$ in which patient $p_1$ reports one proxy donor $d_1^1$. Assume that, given $G$, $A$ returns a solution $s$ in which $p_1$ receives a compatible kidney.
+    
+    Now, construct a graph $G'$ with the same structure as $G$, but where $p_1$ has an additional proxy donor $d_1^2$. If this addition increases the maximum number of patients saved, it implies that $d_1^2$ is used, and therefore $p_1$ still receives a compatible kidney.
+    
+    If the addition of $d_1^2$ does not increase the number of patients saved (i.e., the optimal value remains the same), then the solution returned by $A$ in $G'$ must still belong to the set $S_k$ of solutions that save $k$ patients. Since $A$ uses a consistent tie-breaking rule and the ordering over $S_k$ is fixed independently of the reports, the algorithm will either:
+    \begin{enumerate}
+        \item Return the same solution $s$ as before, in which $p_1$ receives a compatible kidney; or
+        \item Return a different solution $s' \in S_k$ that is ranked higher than $s$ according to the consistent ordering. This change can only occur if $d_1^2$ is used, which again implies that $p_1$ receives a compatible kidney.
+    \end{enumerate}
+    \end{proof}
+\end{lemma}
 
 
+
+\begin{figure}
+    \centering
+    \includegraphics{data/weak_truthfulness.pdf}
+    \caption[An example output of an algorithm without a consistent tie-breaking strategy.]{Example outputs from an algorithm solving the social-welfare-maximizing multiple donors model without a consistent tie-breaking strategy. In \textbf{(a)}, the algorithm selects the left cycle of length 2, assigning $p_1$ a compatible kidney. In \textbf{(b)}, patient $p_1$ reports an additional 'dangling' donor $d_1^2$. This time, the algorithm selects the right cycle of length 2, which is equally compelling, resulting in patient $p_1$ not being matched to a compatible kidney.}
+    \label{fig:weak_truthfulness}
+\end{figure}
 
 
 \section{Achieving Truthfulness via Randomized Mechanisms}

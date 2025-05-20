@@ -9,14 +9,54 @@
 
 
 % Section on computational complexity and related problems
-\section{Computational Complexity and Related Problems}
-% Introduce NP-completeness and approximation concepts
+\section{Computational Complexity}
+\label{sec:computational_complexity}
+
+In this section, we briefly review fundamental concepts from computational complexity theory that are relevant to the hardness results presented in this work. We focus on the notions of decision and optimization problems, the class NP, NP-completeness, and approximation hardness, which provide the theoretical foundation for analyzing the difficulty of algorithmic problems in kidney exchange.
+
+\subsection*{Decision and Optimization Problems}
+
+Many computational problems can be framed in two ways: as a decision problem or as an optimization problem. A decision problem asks whether a solution meeting some criterion exists (e.g., “Is there a matching saving at least $k$ patients?”), while an optimization problem asks for the best such solution (e.g., “What is the maximum number of patients that can be saved?”).
+
+Complexity theory typically studies decision problems, particularly those in the class NP.
+
+\subsection*{The Class NP and NP-Completeness}
+
+A decision problem is said to be in NP (nondeterministic polynomial time) if a proposed solution can be verified in polynomial time. A problem is NP-complete if it is both in NP and as hard as any other problem in NP, meaning that every problem in NP can be reduced to it in polynomial time. NP-complete problems are believed to be intractable in the worst case—that is, they are unlikely to have polynomial-time algorithms.
+
+To prove that a problem is NP-complete, it is common to reduce from a known NP-complete problem, such as \textsc{3SAT}, \textsc{Hamiltonian Path}, or \textsc{Longest Simple Path}. In this thesis, we use such reductions to establish the hardness of several matching problems in the kidney exchange setting.
+
+\subsection*{Approximation and Inapproximability}
+
+When exact solutions are computationally intractable, approximation algorithms provide a practical alternative. An algorithm is said to have an approximation ratio $\alpha$ if it always produces a solution whose value is within a factor $\alpha$ of the optimal. For example, a $1/2$-approximation algorithm for maximizing the number of transplants would guarantee at least half the optimal number.
+
+Some NP-hard problems admit good approximation algorithms, while others are hard to approximate within any constant factor unless P = NP. In our setting, we also investigate whether meaningful approximation guarantees can be achieved despite the underlying NP-completeness of the matching problems.
+
+
+\section{Related Problems}
+
+\begin{problem}[Longest Path from Fixed Source]
+\label{prob:longest_simple_path}
+Given a directed graph $G = (V, E)$, a designated source vertex $s \in V$, and an integer $k$, decide whether there exists a simple path starting from $s$ of length at least $k$.
+\end{problem}
+\textcolor{red}{TODO check cite later}
+
+This problem is NP-complete in general directed graphs, by a standard reduction from the \textsc{Hamiltonian Path} problem \cite{garey1979computers}. It remains hard even if the target node is not specified.
 
 % Section on mechanism design and truthfulness
 \section{Mechanism Design and Incentive Compatibility}
 % Explain DSIC and relevance to kidney exchange
 
 In this section, we briefly introduce key concepts from mechanism design theory that are relevant to our work. More details can be found in standard references such as \cite{Roughgarden_2016}.
+
+
+\begin{problem}[(2-positive, 2-negative)-3SAT]
+\label{prob:2p2n_3sat}
+Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in at most two positive literals and at most two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
+\end{problem}
+
+This problem is a well-known restriction of the classical \textsc{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2003restricted}.
+
 
 \subsection*{Mechanism Design Basics}
 
