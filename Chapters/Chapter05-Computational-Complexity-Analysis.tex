@@ -32,17 +32,33 @@ The decision version of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney E
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
-\textcolor{red}{TODO add an image example here later}
-
-We prove NP-hardness by reduction from the \textsc{Longest Path from Fixed Source} problem. Given a directed graph $G = (V, E)$, a designated source node $s$, and an integer $k$, we construct an instance of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} such that there exists a solution saving at least $3 + 2k$ patients if and only if there exists a simple path of length at least $k$ starting from $s$ in $G$.
+We prove NP-hardness by reduction from the \textsc{Longest Path from Fixed Source} problem. Given a directed graph $G = (V, E)$, a designated source node $s$, and an integer $k$, we construct an instance of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem such that there exists a solution saving at least $3 + 2k$ patients if and only if there exists a simple path of length at least $k$ starting from $s$ in $G$.
 
 To construct the kidney exchange instance, we begin by adding a single 2-cycle between two patients, where one of the patients is associated with two donors: one donor participates in the 2-cycle, and the other is compatible with the patient corresponding to node $s$ in $G$. This setup initiates the only possible chain in the instance.
 
-Next, for each vertex $v \in V$, we create a corresponding patient. For every directed edge $(a, b) \in E$, we introduce a new intermediate patient labeled $ab$. We then assign a donor to patient $a$ who is compatible with patient $ab$, and a donor to patient $ab$ who is compatible with patient $b$. This models each edge as a two-step donation chain segment.
+Next, for each vertex $v \in V$, we create a corresponding patient-donor pair; $p_v$, $d_v$. For every directed edge $(a, b) \in E$, we introduce a new intermediate patient-donor pair; $p_{ab}$, $d_{ab}$, and add two compatibility edges; $(d_a, p_{ab})$ and $(d_ab, p_b)$. This models each edge as a two-step donation chain segment, as shown in \autoref{fig:longest_path_edge_gadget}.
+
+
+\begin{figure}
+    \centering
+    \includegraphics{data/longest_path_edge_gadget.pdf}
+    \caption[Edge gadget used in reduction from Longest Path from Fixed Source problem.]{Edge gadget used in reduction from Longest Path from Fixed Source problem.}
+    \label{fig:longest_path_edge_gadget}
+\end{figure}
+
 
 In the resulting kidney exchange instance, only the single 2-cycle we constructed initially is eligible to be selected under the problem constraints. Chains can only be initiated from this 2-cycle and must respect donor compatibility. Since all other potential cycles in the graph (formed via edge constructions) involve at least four patients, no other 2-cycles exist in the instance.
 
-Therefore, maximizing the number of patients who receive a kidney corresponds to finding the longest simple path in $G$ starting from $s$. Each edge in $G$ contributes two transplantations (through the $ab$ intermediate patient), and the initial 2-cycle saves one patient, plus one more as the entry to the chain. Hence, the total number of patients saved is at least $3 + 2k$ if and only if there exists a simple path of length at least $k$ in the original graph.
+Therefore, maximizing the number of patients who receive a kidney corresponds to finding the longest simple path in $G$ starting from $s$. Each edge in $G$ contributes two transplantations (through the intermediate patient-donor pair), and the initial 2-cycle saves two patients, plus one more as the entry to the chain. Hence, the total number of patients saved is at least $3 + 2k$ if and only if there exists a simple path of length at least $k$ in the original graph.
+
+An example instance of \textsc{Longest Path from Fixed Source} problem and its corresponding reduction to the instance of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem is shown in \autoref{fig:longest_path_graph_example}.
+
+\begin{figure}
+    \centering
+    \includegraphics{data/longest_path_graph_example.pdf}
+    \caption[An example instance of \textsc{Longest Path from Fixed Source} problem and its corresponding reduction to the instance of the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem]{\textbf{(a)} shows an example graph instance of \textsc{Longest Path from Fixed Source} problem, where the longest path $(s \rightarrow 2 \rightarrow 1 \rightarrow t)$ has length 3. \textbf{(b)} illustrates the same graph represented in the \textsc{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem and the corresponding optimal solution. The orange 2-cycle on the left initiates the longest available chain consisting of 7 transplantations. The solution sums up to 9 patients saved in total.}
+    \label{fig:longest_path_graph_example}
+\end{figure}
 
 Membership in NP is immediate, since a proposed matching (i.e., a set of selected cycles and chains) can be verified in polynomial time.
 \end{proof}
