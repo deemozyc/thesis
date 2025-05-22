@@ -43,6 +43,28 @@ Given a directed graph $G = (V, E)$, a designated source vertex $s \in V$, and a
 
 This problem is NP-complete in general directed graphs, by a standard reduction from the \textsc{Hamiltonian Path} problem \cite{garey1979computers}. It remains hard even if the target node is not specified.
 
+Moreover, the \textsc{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, unless $\text{P} = \text{NP}$, there exists no polynomial-time approximation algorithm that can approximate the longest simple path to within any constant factor or even within a factor of $n^{1 - \varepsilon}$ for any $\varepsilon > 0$~\cite{karger1997approximating, vazirani2001approximation}. This strong inapproximability result stems from a reduction from the \textsc{Hamiltonian Path} problem and implies that, for arbitrary directed graphs, the longest path problem is essentially non-approximable.
+
+\begin{problem}[2P2N-3SAT]
+\label{prob:2p2n_3sat}
+Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in at most two positive literals and at most two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
+\end{problem}
+
+This problem is a well-known restriction of the classical \textsc{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2003restricted}.
+
+In addition to being NP-complete, the \textsc{2P2N-3SAT} problem remains APX-hard~\cite{berman2003restricted}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$. Despite the bounded number of occurrences per variable, the best-known approximation ratio remains at most $7/8$, the same as for general \textsc{MAX-3SAT}~\cite{hazan2006complexity}.
+
+
+\begin{problem}[Unweighted $k$-Set Packing]
+Given a finite universe $U$ and a collection $\mathcal{S}$ of subsets of $U$, where each subset has cardinality at most $k$, find a maximum-size subcollection $\mathcal{S}' \subseteq \mathcal{S}$ such that all sets in $\mathcal{S}'$ are pairwise disjoint.
+\end{problem}
+
+This classical optimization problem is known to be NP-hard for any $k \geq 3$, and it remains hard to approximate. In particular, Hazan et al.~\cite{hazan2006complexity} showed that the problem admits a polynomial-time $\frac{3}{k+1}$-approximation algorithm, which is tight under standard complexity assumptions. For example, when $k=4$, the best known approximation ratio is $3/5$.
+
+In the weighted variant, where each subset is assigned a non-negative weight and the goal is to maximize the total weight of selected disjoint sets, Berman~\cite{berman2000packing} established a $\frac{2}{k+1}$-approximation guarantee.
+
+
+
 % Section on mechanism design and truthfulness
 \section{Mechanism Design and Incentive Compatibility}
 % Explain DSIC and relevance to kidney exchange
@@ -50,12 +72,7 @@ This problem is NP-complete in general directed graphs, by a standard reduction 
 In this section, we briefly introduce key concepts from mechanism design theory that are relevant to our work. More details can be found in standard references such as \cite{Roughgarden_2016}.
 
 
-\begin{problem}[(2-positive, 2-negative)-3SAT]
-\label{prob:2p2n_3sat}
-Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in at most two positive literals and at most two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
-\end{problem}
 
-This problem is a well-known restriction of the classical \textsc{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2003restricted}.
 
 
 \subsection*{Mechanism Design Basics}

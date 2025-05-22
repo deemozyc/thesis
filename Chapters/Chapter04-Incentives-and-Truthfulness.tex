@@ -78,6 +78,7 @@ When it comes to weak truthfulness, not every algorithm that solves the social-w
 The proof of the previous lemma shows that inconsistent tie-breaking is the reason an algorithm may fail to be weakly truthful. In the next lemma, we show that an algorithm with an arbitrary consistent tie-breaking rule is weakly truthful. Before  we do that, let's define what consistent tie-breaking even means.
 
 \begin{definition}[Consistent tie-breaking rule]
+\label{consistent_tie_breaking_rule}
     Given the set $S_k$ of all solutions that achieve the same score $k$ (i.e., the same number of patients saved), a consistent tie-breaking rule imposes a strict, arbitrary ordering over $S_k$ that is independent of the reports provided by patient-donors groups. For any input graph $G$ where the maximum number of patients that can be saved is $k$, the rule selects the highest-ranked valid solution from $S_k$ according to this fixed ordering.
 \end{definition}
 
@@ -86,7 +87,7 @@ A particularly appealing consistent tie-breaking rule is based on assigning prio
 \begin{lemma}
     An algorithm with a consistent tie-breaking rule solving the social-welfare maximizing multiple donors model is weakly truthful.
     \begin{proof}
-    Let $A$ be an algorithm with a consistent tie-breaking rule that solves the social-welfare maximizing multiple donors model, and consider an arbitrary graph $G$ in which patient $p_1$ reports one proxy donor $d_1^1$. Assume that, given $G$, $A$ returns a solution $s$ in which $p_1$ receives a compatible kidney.
+    Let $A$ be an algorithm with a consistent tie-breaking rule (as defined in \autoref{consistent_tie_breaking_rule}) that solves the social-welfare maximizing multiple donors model, and consider an arbitrary graph $G$ in which patient $p_1$ reports one proxy donor $d_1^1$. Assume that, given $G$, $A$ returns a solution $s$ in which $p_1$ receives a compatible kidney.
     
     Now, construct a graph $G'$ with the same structure as $G$, but where $p_1$ has an additional proxy donor $d_1^2$. If this addition increases the maximum number of patients saved, it implies that $d_1^2$ is used, and therefore $p_1$ still receives a compatible kidney.
     

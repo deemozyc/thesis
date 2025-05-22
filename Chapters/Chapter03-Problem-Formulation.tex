@@ -70,7 +70,7 @@ A solution is a subgraph $G^{\mathrm{opt}} = (V, E^{\mathrm{opt}})$ with $E^{\ma
     \]
 \end{enumerate}
 
-As mentioned in Chapter~\ref{cha:preliminaries}, our goal is to design algorithms for this model that ideally satisfy the following three properties:  
+As mentioned in ~\autoref{cha:preliminaries}, our goal is to design algorithms for this model that ideally satisfy the following three properties:  
 (i) truthfulness (DSIC),  
 (ii) maximization of social welfare, and  
 (iii) computational efficiency.
@@ -89,19 +89,11 @@ We then consider a more constrained version, where limits are placed on the maxi
 
 \section{Alternative Interpretations}
 
-The problem we consider has a structured, graph-like nature, but involves two distinct types of nodes: patients and donors. This subsection explores how our model relates to several classical problem frameworks.
+The problem we consider has a structured, graph-like nature, but involves two distinct types of nodes: patients and donors. This subsection explores how our model connects to classical problem frameworks, providing alternative perspectives that inform both algorithmic design and empirical evaluation.
 
-\textcolor{red}{TODO add chapter hyperlink when finished all chapters}
+One useful interpretation frames our problem as a special case of the \emph{weighted set packing} problem. Each feasible subset corresponds to a valid exchange—either a cycle or a cycle followed by a chain—with the constraint that no individual (i.e., patient or donor) can appear in more than one subset. The objective is to select a collection of disjoint subsets that maximizes the total number of patients matched, which defines the weight of each subset. We adopt this perspective in the design of a randomized mechanism presented in a later chapter.
 
-At first glance, the problem appears similar to a general graph problem in which all nodes are treated identically. For example, one may consider the following: given an unweighted, undirected graph $G = (V, E)$, the goal is to find a collection of disjoint cycles, possibly followed by chains initiated from selected cycles. However, despite this superficial resemblance, our problem differs fundamentally.
-
-First, our model is inherently structured—nodes have semantic roles (patients or donors), which affect both the feasibility of edges and the interpretation of cycles and chains. In contrast, classical graph formulations make no such distinctions. Second, the feasibility of a solution in our setting depends not only on the graph topology but also on the role-based constraints imposed by the kidney exchange context.
-
-Therefore, while our model overlaps in spirit with certain general graph problems, it is neither equivalent to nor a strict subproblem of them. Nevertheless, some of the techniques or insights developed in our setting are applicable to more general problems, and we will return to this point in later sections.
-
-An alternative interpretation views our problem as a special case of the weighted set packing problem. Each feasible subset corresponds to a valid cycle or cycle with chains, with the constraint that no element (e.g., patient or donor) can be used more than once. The objective is to select a collection of disjoint subsets (exchanges), maximizing the total number of patients matched — this defines the weight of each subset. We will adopt this view to design a randomized algorithm later in the paper.
-
-Finally, our problem can also be modelled as an integer linear program (ILP), inspired by the set packing formulation. In the experimental section, we implement and solve such an ILP to evaluate the performance of our approach in practice.
+Additionally, our problem can be formulated as an \emph{integer linear program (ILP)}, also inspired by the set packing view. In the experimental section, we implement and solve such an ILP to evaluate the practical effectiveness and scalability of our approach.
 
 
 %%% Local Variables:
