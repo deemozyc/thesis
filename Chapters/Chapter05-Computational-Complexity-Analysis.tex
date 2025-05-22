@@ -65,7 +65,7 @@ Membership in NP is immediate, since a proposed matching (i.e., a set of selecte
 
 \subsection{Extensions to \texorpdfstring{$k$}{k}-Cycle Constraints}
 
-We now extend the previous hardness result to two broader settings. The first generalizes the cycle constraint from length 2 to an arbitrary constant $k \ge 2$, and the second considers a related class of general graph-based matching problems.
+We now extend the previous hardness result to two broader settings, where the constraint on the length of cycles is generalized from length 2 to an arbitrary constant $k \ge 2$.
 
 \begin{lemma}
 For any fixed constant $k \ge 2$, the decision version of the \textsc{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
@@ -83,16 +83,18 @@ Thus, as in the 2-cycle case, any feasible solution must rely on a single chain 
 
 \section{Reduction from 2P2N-3SAT}
 
-We now show that even in the highly constrained setting where only cycles of length two and chains of length one are allowed, the problem remains computationally hard. This result is established via a reduction from the \textsc{2P2N-3-SAT} problem (\autoref{prob:2p2n_3sat}).
+In the following two lemmas, we show that for all $N = \{n : n \ge 2\} \cup \{\infty\}$ and $M = \{m:m \ge 1\} \cup \{\infty\}$, \textsc{N-Cycle M-Chain Multi-Donor Kidney Exchange Problem} is computationally hard. This result is established via a reduction from the \textsc{2P2N-3-SAT} problem (\autoref{prob:2p2n_3sat}). 
 
 \begin{lemma}
+\label{lemma:2c1c_npc}
 The decision version of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
-We prove NP-hardness via a reduction from the \textsc{2P2N-3-SAT} problem. Let $\phi$ be a Boolean formula in conjunctive normal form, consisting of a set of clauses $C$ and a set of variables $X$, where each clause $c \in C$ contains exactly three literals, and each variable $x \in X$ appears in at most two clauses as a positive literal and in at most two clauses as a negative literal. We construct a corresponding instance of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} such that $\phi$ is satisfiable if and only if there exists a feasible exchange satisfying at least a certain number of patients $t$ (specified below).
+We prove NP-hardness via a reduction from the \textsc{2P2N-3-SAT} problem. Let $\phi$ be a Boolean formula in conjunctive normal form, consisting of a set of clauses $C$ and a set of variables $X$, where each clause $c \in C$ contains exactly three literals, and each variable $x \in X$ appears in at most two clauses as a positive literal $x$ and in at most two clauses as a negative literal $\neg{x}$. We construct a corresponding instance of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} such that $\phi$ is satisfiable if and only if there exists a feasible exchange satisfying at least a certain number of patients $t$ (specified below).
 
-In the construction, each clause $c \in C$ is represented as a patient-donor pair $(p_c, d_c)$. For each variable $x \in X$, we construct a special gadget illustrated in \autoref{fig:sat_reduction_boolean_gadget}. The gadget consists of patient-donor groups forming four overlapping cycles and four patient-donor pairs representing two negative literals ($\neg{x}$) and two positive literals ($x$). The gadget is designed so that either the two patients representing the positive literals $p_x$ are satisfied (as shown in \textbf{(b)}), or the two patients representing the negative literals $p_{\neg{x}}$ are satisfied (as shown in \textbf{(c)}), but never both $p_x$ and $p_{\neg{x}}$ simultaneously. The patients representing clauses and those representing literals are the same nodes in our construction. For example, given a clause $c = (x_1, \neg{x_2}, x_3)$, we identify $p_c = p_{x_1} = p_{\neg{x_2}} = p_{x_3}$. Each patient can represent only one clause, and if a patient representing a literal is not associated with any clause, we omit that patient and their corresponding donor from the construction.
+In the construction, each clause $c \in C$ is represented as a patient-donor pair $(p_c, d_c)$. For each variable $x \in X$, we construct a special gadget illustrated in \autoref{fig:sat_reduction_boolean_gadget}. The gadget consists of patient-donor groups forming four overlapping cycles and four patient-donor pairs representing two negative literals ($\neg{x}$) and two positive literals ($x$). The gadget is designed so that either the two patients representing the positive literals $p_x$ are satisfied (as shown in \textbf{(b)}), or the two patients representing the negative literals $p_{\neg{x}}$ are satisfied (as shown in \textbf{(c)}), but never both $p_x$ and $p_{\neg{x}}$ simultaneously. The patients representing clauses and those representing literals are the same nodes in our construction. For example, given a clause $c = (x_1, \neg{x_2}, x_3)$, we identify $p_c = p_{x_1} = p_{\neg{x_2}} = p_{x_3}$. Each patient can represent only one clause, and if a patient representing a literal is not associated with any clause, we omit that patient and their corresponding proxy donor from the construction.
+
 
 \begin{figure}
     \centering
@@ -104,6 +106,25 @@ In the construction, each clause $c \in C$ is represented as a patient-donor pai
 In \autoref{fig:sat_reduction_boolean_gadget}, notice that no matter which pair of cycles is selected, the four patients $p_1$, $p_2$, $p_3$, and $p_4$ always receive compatible kidneys. If $\phi$ is satisfiable, then in our construction all patients representing clauses ${ p_c : c \in C }$ receive compatible kidneys in every optimal solution. Conversely, if $\phi$ is not satisfiable, then in every solution there exists at least one patient representing a clause who does not receive a compatible kidney. This gives rise to the threshold $t = 4 \cdot |X| + |C|$, indicating that the solution to the constructed instance of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} satisfies $t$ patients if and only if $\phi$ is satisfiable.
 \end{proof}
 
+
+\begin{lemma}
+\label{lemma:2n1m_npc}
+For all $N = \{n : n \ge 2\} \cup \{\infty\}$ and $M = \{m:m \ge 2\} \cup \{\infty\}$, The decision version of the \textsc{N-Cycle M-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
+
+\begin{proof}[Proof Sketch]
+This proof is almost identical to the one of \autoref{lemma:2c1c_npc}. What changes is the structure of the variable gadget and the threshold $t$. This time the variable gadget consists of two overlapping cycles, which only one of can be selected. Each of the cycles, when selected, starts a donation chain that can satisfied up to two patients representing positive literals $p_x$ or up to two patients representing negative literals $p_{\neg{x}}$, as it is show in \textbf{(a)} and \textbf{(b)}. Notice, that in this construction
+
+\textcolor{red}{TODO continue}
+
+\begin{figure}
+    \centering
+    \includegraphics{data/sat_reduction_boolean_gadget2.pdf}
+    \caption[]{}
+    \label{fig:sat_reduction_boolean_gadget2}
+\end{figure}
+
+\end{proof}
+\end{lemma}
 
 
 
