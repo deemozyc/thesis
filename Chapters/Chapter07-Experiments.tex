@@ -2,7 +2,105 @@
 \label{cha:Experiments}
 
 
+\section{The Random Graph Model}
+The random graph model we use for the experiment was inspired by the one introduced in \cite{toulis2011random}. It was designed for generating patient-donor pairs based on a fixed blood type distribution and tissue-type compatibility factor $1 - p_c = 0.8$. In our setting, we consider patient-donors groups with up to two proxy donors, so the already existing random graph model had to be modified in order to fit our requirements. We introduce a new variable; \textit{double donor ratio} ($ddr$), which represents the percentage of patient-donor groups with two proxy donors. The mount of information about what $ddr$ is in the real world \ac{KE} programs is very small, \cite{holscher2018kidney} reports that only $7.3\%$ candidates registered with more than one potential donor. The following are the algorithms we use for generating random patient-donors groups (\autoref{alg:generate_patient_donors}) and the compatibility edges between them (\autoref{alg:generate_compatibility_edges})
 
+\begin{algorithm}
+    \caption{Generate patient-donor groups with multiple donors}
+    \label{alg:generate_patient_donors}
+
+    \KwIn{$n$: number of patient-donor groups to generate, $ddr$: double donor ratio, $p_c$: tissue incompatibility factor}
+    \KwOut{$D$: $n$ patient-donor groups}
+
+    $D \gets \emptyset$\;
+    $\#double\_donor\_groups \gets n \cdot ddr$\;
+    \While{$|D| < n$}{
+        $patient\_type \gets \text{pick random blood type}$\;
+
+        \If{$|D| < \#double\_donor\_groups$}{
+            $donor\_types \gets \text{pick 2 random blood types}$\;
+        }
+        \Else{
+            $donor\_types \gets \text{pick 1 random blood types}$\;
+        }
+        \:
+
+        \If{ $\forall donor\_type \in donor\_types$ ($patient\_type$\textup{ is incompatible with }$donor\_type$ \textup{ or } $random() < p_c$)}{
+            $G \gets G \cup \{(patient\_type, donors\_types)\}$\;
+        }
+    }
+    \Return{D}
+\end{algorithm}
+
+
+\begin{algorithm}
+    \caption{Generate compatibility edges}
+    \label{alg:generate_compatibility_edges}
+
+    \KwIn{$D$: patient-donor groups, $p_c$: tissue incompatibility factor}
+    \KwOut{$E_c$: compatibility edges}
+
+    $E \gets \emptyset$\;
+    \ForEach{$(p_i, donors_i) \in D$}{
+        \ForEach{$(p_j, donors_j) \in D$ where $i \neq j$}{
+            \ForEach{$d \in donors_i$}{
+                \If{$d$ \textup{ is blood type compatible with } $p_j$ \textup{ and } $random() \ge p_c$}{
+                    $E_c \gets E_c \cup \{(i \rightarrow j)\}$\;
+                    \textbf{break}\;
+                }
+            }
+        }
+    }
+
+    \Return{$E_c$}
+\end{algorithm}
+
+The graph we generate can be adapted to the model with only one donor per group by either randomly removing one of the proxy donors from each group containing two proxy donors, or by setting the parameter $ddr$ to $0$ (which is equivalent to the model described in \cite{toulis2011random}). Importantly, these two methods produce models of \ac{KE} programs with different blood type distributions. Notably, as $ddr$ increases, the percentage of patients with an unfavorable blood type (‘O’) also increases, as shown in \autoref{fig:patient_blood_type_as_ddr_increases}. In our experiments, when comparing the model with one proxy donor per patient to the model with multiple donors, we use the first method.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.\linewidth]{data/patient_blood_type_as_ddr_increases.png}
+    \caption[Distribution of patient's blood types as double donor ratio changes]{The diagram illustrating change in distribution of patient's blood types in \ac{KE} programs as we change the ratio of group having two proxy donors.}
+    \label{fig:patient_blood_type_as_ddr_increases}
+\end{figure}
+
+
+\section{Experiment Introduction}
+
+In this section, we present the experimental evaluation of our proposed model. We aim to investigate the practical impact of allowing multiple donors per patient under different kidney exchange settings.
+
+Our focus is on the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Model}. For comparison, we include two baseline models:
+\begin{itemize}
+\item \textsc{2-Cycle No-Chain Multi-Donor Model}, where each patient may have up to two donors, but at most one donor can be used, and only 2-cycles are allowed.
+\item \textsc{Single-Donor 2-Cycle Model}, the classical setting where each patient has exactly one donor and only disjoint 2-cycles are permitted.
+\end{itemize}
+
+Given an input instance (represented as a compatibility graph), we first reduce the problem to a \emph{set packing} formulation as discussed in \autoref{prob:k_set_packing}, by enumerating all feasible 2-cycles and attaching all valid length-1 chains.
+
+We then formulate the resulting problem as an instance of integer programming and solve it using IBM ILOG CPLEX Optimizer~\cite{cplex}.
+
+CPLEX is capable of computing optimal solutions efficiently in most cases; however, it does not guarantee short runtimes for all instances. Therefore, we set a timeout threshold: if a single task runs for more than 12 minutes, it is terminated and excluded from the results.
+
+
+For the experimental analysis, we investigate two key questions.
+
+First, we examine how the percentage of patients matched changes as the total number of patients increases across the three models. Our expectation is that the match rate will increase slightly with the number of patients, due to more potential matches being available. However, we do not expect a significant increase, since the compatibility graph is already fairly dense.
+
+Second, we analyze how the match rate varies with the proportion of patients having a second donor. Specifically, we hypothesize the following trends:
+\begin{itemize}
+\item For the \textsc{Single-Donor 2-Cycle Model}, the match rate may slightly decrease. As discussed earlier, increasing the second-donor ratio changes the underlying distribution, making it harder to match patients in this limited model.
+\item For the \textsc{2-Cycle No-Chain Multi-Donor Model}, the effect is ambiguous: while the increased donor pool may improve match opportunities, the changing distribution may counteract this benefit.
+\item For the \textsc{2-Cycle 1-Chain Multi-Donor Model}, we expect a clear increase in the match rate, as the additional donors provide more opportunities to initiate chains.
+\end{itemize}
+
+
+
+\section{Results}
+
+
+The following two figures present the experimental results. As expected, all observed trends are consistent with our hypotheses. Notably, the \textsc{2-Cycle 1-Chain Multi-Donor Model} achieves a substantial improvement over the \textsc{Single-Donor 2-Cycle Model}, increasing the match rate by nearly $10\%$.
+
+Regarding computational efficiency, we observe that for most instances—up to one thousand patients—the optimal solution can be computed within one minute on a standard laptop. More specifically, out of 1,100 instances, only four exceeded the timeout threshold. This indicates that computational resources are unlikely to pose a practical bottleneck for applying our model in real-world scenarios.
 
 
 %%% Local Variables:

@@ -1,18 +1,12 @@
 \chapter{Preliminaries}
 \label{cha:preliminaries}
 
-% Note that even in Preliminaries, we still should cite some textbook or paper.
-
-% Section on graph basics and terminology
-\section{Graph-Theoretic Foundations}
-% Define basic graph concepts: nodes, edges, matching, etc.
-
 
 % Section on computational complexity and related problems
 \section{Computational Complexity}
 \label{sec:computational_complexity}
 
-In this section, we briefly review fundamental concepts from computational complexity theory that are relevant to the hardness results presented in this work. We focus on the notions of decision and optimization problems, the class NP, NP-completeness, and approximation hardness, which provide the theoretical foundation for analyzing the difficulty of algorithmic problems in kidney exchange.
+In this section, we briefly review fundamental concepts from computational complexity theory that are relevant to the hardness results presented in this work. We focus on the notions of decision and optimization problems, the class NP, NP-completeness, and approximation hardness, which provide the theoretical foundation for analyzing the difficulty of algorithmic problems in kidney exchange. More detail can be found in \cite{garey1979computers}.
 
 \subsection*{Decision and Optimization Problems}
 
@@ -39,29 +33,32 @@ Some NP-hard problems admit good approximation algorithms, while others are hard
 \label{prob:longest_simple_path}
 Given a directed graph $G = (V, E)$, a designated source vertex $s \in V$, and an integer $k$, decide whether there exists a simple path starting from $s$ of length at least $k$.
 \end{problem}
-\textcolor{red}{TODO check cite later}
 
-This problem is NP-complete in general directed graphs, by a standard reduction from the \textsc{Hamiltonian Path} problem \cite{garey1979computers}. It remains hard even if the target node is not specified.
+This problem is NP-complete in general directed graphs, by a standard reduction from the \textsc{Hamiltonian Path} problem \cite{garey1979computers}.
 
-Moreover, the \textsc{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, unless $\text{P} = \text{NP}$, there exists no polynomial-time approximation algorithm that can approximate the longest simple path to within any constant factor or even within a factor of $n^{1 - \varepsilon}$ for any $\varepsilon > 0$~\cite{karger1997approximating, vazirani2001approximation}. This strong inapproximability result stems from a reduction from the \textsc{Hamiltonian Path} problem and implies that, for arbitrary directed graphs, the longest path problem is essentially non-approximable.
+Moreover, the \textsc{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, no polynomial-time algorithm can find a constant-factor approximation for the longest path problem unless $\text{P} = \text{NP}$~\cite{karger1997approximating}. 
 
 \begin{problem}[2P2N-3SAT]
 \label{prob:2p2n_3sat}
 Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in at most two positive literals and at most two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
 \end{problem}
 
-This problem is a well-known restriction of the classical \textsc{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2003restricted}.
+This problem is a well-known restriction of the classical \textsc{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2004approximation}.
 
-In addition to being NP-complete, the \textsc{2P2N-3SAT} problem remains APX-hard~\cite{berman2003restricted}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$. Despite the bounded number of occurrences per variable, the best-known approximation ratio remains at most $7/8$, the same as for general \textsc{MAX-3SAT}~\cite{hazan2006complexity}.
+In addition to being NP-complete, the \textsc{2P2N-3SAT} problem remains APX-hard~\cite{berman2004approximation}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$. Despite the bounded number of occurrences per variable, the best-known approximation ratio remains at most $7/8$, the same as for general \textsc{MAX-3SAT}~\cite{hastad2001optimal}.
 
 
-\begin{problem}[Unweighted $k$-Set Packing]
+\begin{problem}[$k$-Set Packing]
+\label{prob:k_set_packing}
+
 Given a finite universe $U$ and a collection $\mathcal{S}$ of subsets of $U$, where each subset has cardinality at most $k$, find a maximum-size subcollection $\mathcal{S}' \subseteq \mathcal{S}$ such that all sets in $\mathcal{S}'$ are pairwise disjoint.
 \end{problem}
 
-This classical optimization problem is known to be NP-hard for any $k \geq 3$, and it remains hard to approximate. In particular, Hazan et al.~\cite{hazan2006complexity} showed that the problem admits a polynomial-time $\frac{3}{k+1}$-approximation algorithm, which is tight under standard complexity assumptions. For example, when $k=4$, the best known approximation ratio is $3/5$.
+This classical optimization problem is known to be NP-hard for any $k \geq 3$, and it remains hard to approximate. Cygan~\cite{cygan2013improved} presented an algorithm that, for any $\varepsilon > 0$, achieves a $\frac{k + 1 + \varepsilon}{3}$ approximation ratio. The algorithm runs in time polynomial in the number of sets and elements.
 
-In the weighted variant, where each subset is assigned a non-negative weight and the goal is to maximize the total weight of selected disjoint sets, Berman~\cite{berman2000packing} established a $\frac{2}{k+1}$-approximation guarantee.
+%In particular, Hazan et al.~\cite{hazan2006complexity} showed that the problem admits a polynomial-time $\frac{3}{k+1}$-approximation algorithm, which is tight under standard complexity assumptions. For example, when $k=4$, the best known approximation ratio is $3/5$.
+
+%In the weighted variant, where each subset is assigned a non-negative weight and the goal is to maximize the total weight of selected disjoint sets, Berman~\cite{berman2000packing} established a $\frac{2}{k+1}$-approximation guarantee.
 
 
 
@@ -77,7 +74,7 @@ In this section, we briefly introduce key concepts from mechanism design theory 
 
 \subsection*{Mechanism Design Basics}
 
-Mechanism design studies how to construct rules or systems (mechanisms) that lead rational agents to act in a desirable way, typically by reporting private information truthfully. In the context of kidney exchange, each participant (i.e., patient and donor) may possess private information about their available donors or compatibility relationships. The goal is to design a mechanism that selects a socially desirable matching while incentivizing agents to report truthfully.
+Mechanism design studies how to construct rules or systems (mechanisms) that lead rational agents to act in a desirable way, typically by reporting private information truthfully. In the context of kidney exchange, each participant (i.e., a group of patient and donors) may possess private information about their available donors or compatibility relationships. The goal is to design a mechanism that selects a socially desirable matching while incentivizing agents to report truthfully.
 
 Formally, let $\mathcal{A}$ denote the set of all agents (e.g., patients), and let each agent $i \in \mathcal{A}$ have a private type $\theta_i$ (e.g., their available donors). A mechanism consists of:
 \begin{itemize}
@@ -85,24 +82,21 @@ Formally, let $\mathcal{A}$ denote the set of all agents (e.g., patients), and l
     \item An allocation function $f : S_1 \times \cdots \times S_n \rightarrow \mathcal{O}$, which maps reported types to an outcome (e.g., a matching of patients to donors).
 \end{itemize}
 
-In our setting, the allocation function—essentially the algorithm that takes reports as input and produces a matching as output—is the central object of interest. In most cases, the primary design goal is to maximize social welfare, typically measured by the number of patients who receive a kidney.
+In our setting, the allocation function (essentially the algorithm that takes reports as input and produces a matching as output) is the central object of interest. In most cases, the primary design goal is to maximize social welfare, typically measured by the number of patients who receive a kidney.
 
 \subsection*{Incentive Compatibility and Truthfulness}
 
-A mechanism is said to be \textit{truthful}  or \textit{dominant-strategy incentive compatible (DSIC)} or \textit{Strategyproof}, if reporting truthfully is always in each agent's best interest, regardless of what the other agents report. Formally, for all agents $i$, all true types $\theta_i$, and all possible misreports $s_i' \in S_i$, we require:
-
+A mechanism is said to be \textit{truthful}  or \textit{dominant-strategy incentive compatible (DSIC)} or \textit{strategyproof}, if reporting truthfully is always in each agent's best interest, regardless of what the other agents report. Formally, for all agents $i$, all true types $\theta_i$, and all possible misreports $s_i' \in S_i$, we require:
 \[
 u_i(f(\theta_i, s_{-i})) \geq u_i(f(s_i', s_{-i})),
 \]
 
 where $u_i$ is the utility function of agent $i$, and $s_{-i}$ denotes the reports of all other agents.
 
-In patient-donor-pair kidney exchange, the utility function is typically binary: an agent either receives a kidney (utility 1) or does not (utility 0). This binary nature introduces strategic complexity—agents may be incentivized to misreport available donors if doing so improves their chance of being matched.
-
-To summarize, our allocation algorithm ideally satisfies three goals: (i) truthfulness (DSIC), (ii) maximizing social welfare, and (iii) computational efficiency (i.e., running in polynomial time).
+Ideally, our allocation algorithm satisfies three goals: (i) truthfulness (DSIC), (ii) maximizing social welfare, and (iii) computational efficiency (i.e., running in polynomial time).
 
 
-- proxy donor
-- alternative donors
-- compatible patient/donor
+%- proxy donor
+%- alternative donors
+%- compatible patient/donor
 

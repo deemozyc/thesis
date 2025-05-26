@@ -1,15 +1,15 @@
 \chapter{Problem Formulation}
 \label{cha:problem_formulation}
 
-This chapter introduces the formal model that underpins this thesis. We consider a generalization of the standard kidney exchange framework, where each patient may be associated with more than one donor. We begin by reviewing the conventional patient-donor pair model and then extend it to accommodate the setting with multiple donors per patient. We subsequently define a series of algorithmic problems that emerge in this multi-donor context. These problems depart from classical kidney exchange formulations and can be interpreted from multiple perspectives, including structured graph matching, weighted set packing, and integer programming. This chapter establishes the theoretical foundation for the complexity analysis, algorithm design, and experimental evaluation presented in the subsequent chapters.
+This chapter introduces the formal model that underpins this thesis. We consider a generalization of the standard kidney exchange framework, where each patient may be associated with more than one donor. We begin by reviewing the conventional patient-donor pair model and then extend it to accommodate the setting with multiple donors per patient. We subsequently define a series of algorithmic problems that emerge in this multi-donor context. These problems depart from classical kidney exchange formulations and can be interpreted from multiple perspectives.%, including structured graph matching, weighted set packing, and integer programming. This chapter establishes the theoretical foundation for the complexity analysis, algorithm design, and experimental evaluation presented in the subsequent chapters.
 
 \section{Overview of the Model}
 
-We begin by reviewing a model which is commonly used in kidney exchange literature. In the model, each node represents a \textit{patient-donor pair}, and each directed edge indicates that the donor in the source node is compatible with the patient in the target node. This results in an unweighted directed graph $G = (V, E)$. Depending on the specific problem setting — such as restrictions on the length of allowed exchange cycles — this formulation leads to different variants of graph matching problems. In general, however, the objective is to find disjoint exchange cycles that include the maximum number of patients.
+We begin by reviewing a model which is commonly used in kidney exchange literature. In the model, each node represents a \textit{patient-donor pair}, and each directed edge indicates that the donor in the source node is compatible with the patient in the target node. This results in an unweighted directed graph $G = (V, E)$. Depending on the specific problem setting (such as restrictions on the length of allowed exchange cycles) this formulation leads to different variants of graph matching problems. In general, however, the objective is to find disjoint exchange cycles that include the maximum number of patients.
 
-Extending the model to the version where each patient is associated with multiple \textit{alternative donors} is straightforward. In this extension, each patient along with all their associated proxy donors is still represented as a single node in the graph. The compatibility edges are then defined such that a directed edge from node $u$ to node $v$ exists if any of the donors associated with patient $u$ is compatible with the patient in node $v$. This preserves the structure of the original graph as a directed graph $G = (V, E)$, but with a potentially denser set of edges due to the increased number of donor-patient compatibility possibilities. This setting is then identical to the standard patient-donor pair \ac{KE} problem: the objective is still to find disjoint exchange cycles in a directed compatibility graph.
+Extending the model to the version where each patient is associated with multiple \textit{alternative donors} is straightforward. In this extension, each patient along with all his associated proxy donors is still represented as a single node in the graph. The compatibility edges are then defined such that a directed edge from node $u$ to node $v$ exists if any of the donors associated with patient $u$ is compatible with the patient in node $v$. This preserves the structure of the original graph as a directed graph $G = (V, E)$, but with a potentially denser set of edges due to the increased number of donor-patient compatibility possibilities. This setting is then identical to the standard patient-donor pair \ac{KE} problem: the objective is still to find disjoint exchange cycles in a directed compatibility graph.
 
-However, a more general scenario arises if we allow a patient to receive a kidney while all of their associated donors are permitted to donate simultaneously. We call this model \textit{multiple donors} model. How this model relates to other kidney exchange models is shown in \autoref{fig:models_hierarchy}. In this case, one of the donors may participate in an exchange cycle as usual, while other donor initiate a donation chains, effectively increasing the total number of transplants.
+A more general scenario arises if we allow a patient to receive a kidney while all of their associated donors are permitted to donate simultaneously. We call this model \textit{multiple donors} model. How this model relates to other kidney exchange models is shown in \autoref{fig:models_hierarchy}. In this case, one of the donors may participate in an exchange cycle as usual, while other donor initiate a donation chains, effectively increasing the total number of transplants.
 
 
 
@@ -17,13 +17,13 @@ However, a more general scenario arises if we allow a patient to receive a kidne
 \begin{figure}
     \centering
     \includegraphics{data/models_hierarchy.pdf}
-    \caption[Hierarchy of kidney exchange models]{Hierarchy of kidney exchange models. Each successive set is a superset of the previous: patient-donor pairs form the core, extended by alternative donors, multiple donors, and finally clubs briefly mentioned in \autoref{sec:background_and_motivation}.\textcolor{red}{TODO check the club model is a sup model of all others or not}}
+    \caption[Hierarchy of kidney exchange models]{Hierarchy of kidney exchange models. Each successive set is a superset of the previous: patient-donor pairs form the core, extended by alternative donors, multiple donors, and finally clubs briefly mentioned in \autoref{sec:background_and_motivation}.}
     \label{fig:models_hierarchy}
 \end{figure}
 
 In such settings, we observe that allowing chains to follow cycles can only improve social welfare—it never reduces the total number of transplants compared to \textit{patient-donor pairs} model. Moreover, this problem deviates from the classical graph matching framework: it is no longer a pure matching problem.
 
-Finally, we note that it is now possible for one donor to participate in a cycle while the second donor from the same patient initiates or joins a chain. This creates a structural asymmetry in the problem. A general graph representation is no longer sufficient. Instead, we need to explicitly distinguish between patients and donors in the model to accurately capture the structure and constraints of the problem. An example of a graph with a patient having two proxy donors is shown in \autoref{fig:multiple_model_example}.
+Finally, we note that it is now possible for one donor to participate in a cycle while the second donor from the same patient initiates or joins a chain. This creates a structural asymmetry in the problem. A general graph representation (i.e. grouping patient and donor into one node) is no longer sufficient. Instead, we need to explicitly distinguish between patients and donors in the model to accurately capture the structure and constraints of the problem. An example of a graph with a patient having two proxy donors is shown in \autoref{fig:multiple_model_example}.
 
 The \textit{multiple donors} model is a generalization of the \textit{alternative donors} model and therefore also accommodates groups consisting of a patient with alternative proxy donors. This case is handled in the same way as in the \textit{alternative donors} model—the donors are merged into a single node, as shown in \autoref{fig:alternative_model_example}.
 
@@ -54,19 +54,20 @@ We formalize the \textit{multiple donors} model as a directed graph $G = (V, E)$
     \item The set of \textit{compatibility edges} $E_{\mathrm{compatible}} \subseteq D \times P$ contains an edge $(d, p)$ if donor $d \in D$ is compatible with patient $p \in P$.
 \end{itemize}
 
-Each donor is a proxy for exactly one patient, and each patient has at most two proxy donors. We assume that no donor is compatible with their own associated patient, i.e., for all $(p, d) \in E_{\mathrm{proxy}}$, we have $(d, p) \notin E_{\mathrm{compatible}}$. If a patient reports his donors as \textit{alternative donors}, those donors are modeled as a single donor node. This node represents the whole set of alternative donors, and a compatibility edge exists if any of them is compatible with a patient.
+Each donor is a proxy for exactly one patient, and each patient has at most two proxy donors. We assume that no donor is compatible with their own associated patient, i.e., for all $(p, d) \in E_{\mathrm{proxy}}$, we have $(d, p) \notin E_{\mathrm{compatible}}$.
+% If a patient reports his donors as \textit{alternative donors}, those donors are modeled as a single donor node. This node represents the whole set of alternative donors, and a compatibility edge exists if any of them is compatible with a patient.
 
-A solution is a subgraph $G^{\mathrm{opt}} = (V, E^{\mathrm{opt}})$ with $E^{\mathrm{opt}} \subseteq E$ satisfying the following constraints:
+A solution is a subgraph $G^{\mathrm{*}} = (V, E^{\mathrm{*}})$ with $E^{\mathrm{*}} \subseteq E$ satisfying the following constraints:
 \begin{enumerate}
     \item \textbf{Patient receives at most one kidney:}  
     Each patient receives at most one kidney from a compatible donor:  
     \[
-        \forall p \in P, \quad \left| \{ d \in D : (d, p) \in E^{\mathrm{opt}}_{\mathrm{compatible}} \} \right| \le 1.
+        \forall p \in P, \quad \left| \{ d \in D : (d, p) \in E^{\mathrm{*}}_{\mathrm{compatible}} \} \right| \le 1.
     \]
     \item \textbf{Donor donates only if proxy patient is matched:}  
     A donor $d$ may donate a kidney for some patient $p$ if and only if his associated patient $p'$ also receives a compatible kidney, i.e.,  
     \[
-        (d, p) \in E^{\mathrm{opt}}_{\mathrm{compatible}} \iff (p', d) \in E_{\mathrm{proxy}} \text{ and } \exists (d', p') \in E^{\mathrm{opt}}_{\mathrm{compatible}}.
+        (d, p) \in E^{\mathrm{*}}_{\mathrm{compatible}} \iff (p', d) \in E_{\mathrm{proxy}} \text{ and } \exists (d', p') \in E^{\mathrm{*}}_{\mathrm{compatible}}.
     \]
 \end{enumerate}
 
@@ -74,8 +75,6 @@ As mentioned in ~\autoref{cha:preliminaries}, our goal is to design algorithms f
 (i) truthfulness (DSIC),  
 (ii) maximization of social welfare, and  
 (iii) computational efficiency.
-
-For the goal of maximizing social welfare, it is also acceptable to obtain a constant-factor approximation algorithm.
 
 \section{Problems Variants}
 
@@ -89,9 +88,9 @@ We then consider a more constrained version, where limits are placed on the maxi
 
 \section{Alternative Interpretations}
 
-The problem we consider has a structured, graph-like nature, but involves two distinct types of nodes: patients and donors. This subsection explores how our model connects to classical problem frameworks, providing alternative perspectives that inform both algorithmic design and empirical evaluation.
+The problem we consider has a structured, graph-like nature. This subsection explores how our model connects to classical problem frameworks, providing alternative perspectives that inform both algorithmic design and empirical evaluation.
 
-One useful interpretation frames our problem as a special case of the \emph{weighted set packing} problem. Each feasible subset corresponds to a valid exchange—either a cycle or a cycle followed by a chain—with the constraint that no individual (i.e., patient or donor) can appear in more than one subset. The objective is to select a collection of disjoint subsets that maximizes the total number of patients matched, which defines the weight of each subset. We adopt this perspective in the design of a randomized mechanism presented in a later chapter.
+One useful interpretation frames our problem as a special case of the \emph{weighted set packing} problem. Each feasible subset corresponds to a valid exchange (either a cycle or a cycle followed by a chain) with the constraint that no individual (patient or donor) can appear in more than one subset. The objective is to select a collection of disjoint subsets that maximizes the total number of patients matched, which defines the weight of each subset. We adopt this perspective in the design of a randomized mechanism presented in a later chapter.
 
 Additionally, our problem can be formulated as an \emph{integer linear program (ILP)}, also inspired by the set packing view. In the experimental section, we implement and solve such an ILP to evaluate the practical effectiveness and scalability of our approach.
 

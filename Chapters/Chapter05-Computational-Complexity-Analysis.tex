@@ -3,11 +3,11 @@
 
 This chapter investigates the computational complexity of the algorithmic problems introduced in our multi-donor kidney exchange model. We formalize the decision versions of these problems and show that they are NP-complete, even under seemingly simple constraints.
 
-We begin by presenting several variants of the problem that differ in the allowed structure of exchanges—such as the maximum length of cycles and whether chains are permitted. We then prove that all of these variants are computationally intractable via reductions from known NP-complete problems. These results motivate the need for approximation algorithms and heuristic methods, which will be discussed in later chapters.
+We begin by presenting several variants of the problem that differ in the allowed structure of exchanges, such as the maximum length of cycles and whether chains are permitted. We then prove that all of these variants are computationally intractable via reductions from known NP-complete problems. These results motivate the need for approximation algorithms and heuristic methods, which will be discussed in later chapters.
 
 \section{Problem Variants and Overview of Results}
 
-All problem variants considered in this chapter revolve around structural constraints imposed on the kidney exchange process—specifically, limitations on the maximum length of allowed exchange cycles and chains.
+All problem variants considered in this chapter revolve around structural constraints imposed on the kidney exchange process, specifically, limitations on the maximum length of allowed exchange cycles and chains.
 
 We begin by showing that for any fixed constant $k \ge 2$, the decision version of the \textsc{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete. This result is established via a reduction from the \textsc{Longest Path from Fixed Source} problem.
 
@@ -104,17 +104,27 @@ In the construction, each clause $c \in C$ is represented as a patient-donor pai
 \end{figure}
 
 In \autoref{fig:sat_reduction_boolean_gadget}, notice that no matter which pair of cycles is selected, the four patients $p_1$, $p_2$, $p_3$, and $p_4$ always receive compatible kidneys. If $\phi$ is satisfiable, then in our construction all patients representing clauses ${ p_c : c \in C }$ receive compatible kidneys in every optimal solution. Conversely, if $\phi$ is not satisfiable, then in every solution there exists at least one patient representing a clause who does not receive a compatible kidney. This gives rise to the threshold $t = 4 \cdot |X| + |C|$, indicating that the solution to the constructed instance of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} satisfies $t$ patients if and only if $\phi$ is satisfiable.
+
+The problem is clearly in NP. Given a proposed solution to the instance of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}, we can verify in polynomial time whether it satisfies at least $t = 4 \cdot |X| + |C|$ patients. 
+
+Since the problem is both in NP and NP-hard, we conclude that the decision version of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
 \end{proof}
 
 
 \begin{lemma}
-\label{lemma:2n1m_npc}
-For all $N = \{n : n \ge 2\} \cup \{\infty\}$ and $M = \{m:m \ge 2\} \cup \{\infty\}$, The decision version of the \textsc{N-Cycle M-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
+\label{lemma:ncmc_npc}
+For all $n \in \{n : n \ge 2\} \cup \{\infty\}$ and $m \in \{m:m \ge 2\} \cup \{\infty\}$, The decision version of the \textsc{n-Cycle m-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
 
 \begin{proof}[Proof Sketch]
-This proof is almost identical to the one of \autoref{lemma:2c1c_npc}. What changes is the structure of the variable gadget and the threshold $t$. This time the variable gadget consists of two overlapping cycles, which only one of can be selected. Each of the cycles, when selected, starts a donation chain that can satisfied up to two patients representing positive literals $p_x$ or up to two patients representing negative literals $p_{\neg{x}}$, as it is show in \textbf{(a)} and \textbf{(b)}. Notice, that in this construction
+This proof is almost identical to the one of \autoref{lemma:2c1c_npc}. What changes is the structure of the variable gadget and the threshold $t$. This time the variable gadget consists of two overlapping cycles of length two, which only one of can be selected. Each of the cycles, when selected, start a donation chain of length two, that can satisfied up to two patients representing positive literals $p_x$ or up to two patients representing negative literals $p_{\neg{x}}$, as it is shown in \textbf{(a)} and \textbf{(b)}. Notice, that in this construction, there are no other cycles and no other chains than the ones just mentioned. That implies, the gadget works for arbitrary values of $n \in \{n : n \ge 2\} \cup \{\infty\}$ and $m \in \{m : m \ge 2\} \cup \{\infty\}$, since only 2-cycles and chains of length 2 are required to encode the variable gadget and satisfy the literals.
 
-\textcolor{red}{TODO continue}
+The clause gadgets remain unchanged from the previous proof. As before, each clause $c \in C$ is represented by a patient-donor pair $(p_c, d_c)$, where the patient node is identified with one of the literal patients involved in the clause. Thus, a clause is satisfied in the exchange if and only if it gets a  kidney from one of the associated variable gadgets.
+
+The correctness of the reduction follows similarly: if the Boolean formula $\phi$ is satisfiable, then there exists a consistent assignment of truth values to the variables such that, for each variable $x$, we select the cycle corresponding to either the positive or the negative assignment. This initiates chains satisfying the corresponding literals (and in turn the clauses, since a clause and its corresponding literals are represented by the same patient). As a result, all patients corresponding to clauses receive compatible kidneys, reaching the threshold $t = 5 \cdot |X| + |C|$.
+
+Conversely, if $\phi$ is not satisfiable, then for every selection of variable gadgets, at least one clause cannot be satisfied—meaning its corresponding patient does not receive a kidney. Therefore, the threshold $t$ cannot be reached, and no feasible exchange meets the requirement.
+
+Hence, the decision version of the \textsc{n-Cycle m-Chain Multi-Donor Kidney Exchange Problem} is NP-complete for all $n \ge 2$ and $m \ge 2$, including the unbounded cases.
 
 \begin{figure}
     \centering
