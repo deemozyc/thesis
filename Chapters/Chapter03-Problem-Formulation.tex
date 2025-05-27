@@ -90,10 +90,35 @@ We then consider a more constrained version, where limits are placed on the maxi
 
 The problem we consider has a structured, graph-like nature. This subsection explores how our model connects to classical problem frameworks, providing alternative perspectives that inform both algorithmic design and empirical evaluation.
 
-One useful interpretation frames our problem as a special case of the \emph{weighted set packing} problem. Each feasible subset corresponds to a valid exchange (either a cycle or a cycle followed by a chain) with the constraint that no individual (patient or donor) can appear in more than one subset. The objective is to select a collection of disjoint subsets that maximizes the total number of patients matched, which defines the weight of each subset. We adopt this perspective in the design of a randomized mechanism presented in a later chapter.
+\label{pro:weighted_set_packing}
 
-Additionally, our problem can be formulated as an \emph{integer linear program (ILP)}, also inspired by the set packing view. In the experimental section, we implement and solve such an ILP to evaluate the practical effectiveness and scalability of our approach.
+One useful interpretation frames our problem as a special case of the \emph{weighted set packing} problem. Each feasible subset corresponds to a valid exchange (either a cycle or a cycle followed by chain(s)) with the constraint that no individual (patient or donor) can appear in more than one subset. The objective is to select a collection of disjoint subsets that maximizes the total number of patients matched, which defines the weight of each subset. We adopt this perspective in the design of a randomized mechanism presented in \autoref{cha:approximation}.
 
+
+Additionally, our problem can be formulated as an \emph{integer linear program (ILP)}, also inspired by the set packing view. In the experimental section \autoref{cha:Experiments}, we implement and solve such an ILP to evaluate the practical effectiveness and scalability of our approach.
+\section{Integer Linear Program Formulation}
+
+Let:
+\begin{itemize}
+    \item $P$ be the set of all patients.
+    \item $D$ be the set of all donors.
+    \item $Cycles$ be a set of all possible 2-cycles formed by patients and donors from $P$ and $D$.
+    \item $Chains$ be a set of all possible chains of length 1 starting from a cycle.
+\end{itemize}
+
+The ILP formulation of \textit{2-cycle 1-chain kidney exchange problem} is given as:
+\begin{align*}
+\max\quad & \sum_{c \in \text{Cycles}} 2x_c + \sum_{e \in \text{Chains}} x_e \\
+\text{s.t.}\quad 
+ (1)\: & \sum_{\substack{c \in \text{Cycles} \\ d \in c}} x_c + \sum_{\substack{e \in \text{Chains} \\ e.\text{start} = d}} x_e \le 1 && \forall d \in D \\
+(2)\: & \sum_{\substack{c \in \text{Cycles} \\ p \in c}} x_c + \sum_{\substack{e \in \text{Chains} \\ e.\text{end} = p}} x_e \le 1 && \forall p \in P \\
+(3)\: & \sum_{\substack{c \in \text{Cycles} \\ p_i \in c}} x_c \ge x_e && \forall e = (d_i, p_j),\ i \ne j \\
+& x_c \in \{0, 1\} && \forall c \in \text{Cycles} \\
+& x_e \in \{0, 1\} && \forall e \in \text{Chains}
+\end{align*}
+\noindent
+(1) and (2) ensures that every donor and patient are selected in at most one cycle or chain.
+(3) ensures that a chain is started from a donor which proxy patient is already selected in a cycle. This also ensures that length of the chain is 1. The objective is to select set of cycles and chains that maximize the number of matched patients.
 
 %%% Local Variables:
 %%% mode: latex

@@ -1,22 +1,25 @@
 \chapter{Approximation Algorithms and Inapproximability}
 \label{cha:approximation}
 
-In this chapter, we investigate the approximability of the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}. We first present a simple approximation algorithm that leverages known results from matching and set packing. We then analyze its approximation ratio and demonstrate that it achieves a constant strictly better than $0.5$.
+In this chapter, we investigate the approximability of the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}. We first present a simple approximation algorithm that leverages known results from matching and set packing. We then analyze its approximation ratio and demonstrate that it achieves a constant strictly better than $0.5$.
+
+Based on the two reductions in \autoref{cha:computational_complexity_analysis}, we can also get some results for the  hardness of approximation.
+
 
 \section{Approximation Algorithm for Multi-Donor Exchange}
 
 A natural baseline heuristic is to select only disjoint 2-cycles and ignore all chains. This corresponds to the \emph{alternative donors} model described in \autoref{cha:problem_formulation}, where each patient has one or more donors but only 2-cycles are allowed. The problem then reduces to maximum matching in an undirected graph, solvable in polynomial time via Edmonds' Blossom algorithm~\cite{edmonds1965paths}. Since each 2-cycle can potentially support up to two chain transplants, this strategy yields a $0.5$-approximation in the worst case.
 
-To improve upon the baseline, we reinterpret our problem as a special case of the \emph{unweighted} $k$-Set Packing problem, where each feasible exchange, comprising a 2-cycle and up to two chains, is encoded as a subset of at most four patients. This abstraction allows us to leverage known results from approximation theory: Hazan et al.~\cite{hazan2006complexity} showed a $\frac{3}{k+1}$-approximation is achievable, yielding guarantees of $3/5$ for 4-element subsets and $3/4$ for 3-element ones.
+To improve upon the baseline, we reinterpret our problem as a special case of the \textit{weighted $k$-Set Packing problem}. Details in \autoref{pro:weighted_set_packing}. %, where each feasible exchange, comprising a 2-cycle and up to two chains, is encoded as a subset of at most four patients. And the weight is the number of patients. 
 
-We now describe a hybrid algorithm that combines multiple such approximations to achieve a provable bound strictly better than $0.5$.
+We now describe a hybrid algorithm that combines multiple such approximations to achieve a provable bound strictly better than $0.5$. The algorithm is based on \autoref{prob:k_set_packing}. We introduced that an algorithm that, for any $\varepsilon > 0$, achieves a $\frac{3}{k + 1 + \varepsilon}$ approximation ratio. 
 
 \begin{lemma}
-The following algorithm achieves an approximation ratio of at least $\frac{36}{67} \approx 0.5373$ for the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}.
+The following algorithm achieves an approximation ratio of at least $\frac{36}{67} - \varepsilon$ for any $\varepsilon > 0$ for the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}.
 \end{lemma}
 
 \begin{proof}
-The algorithm considers three disjoint settings:
+To simplify, we assume that $\varepsilon$ is close to $0$. The algorithm considers three disjoint settings:
 \begin{enumerate}
     \item Use only 2-cycles and apply the Blossom algorithm for exact maximum matching.
     \item Use only 2-cycles with one additional chain (3-element subsets), and apply a $\frac{3}{4}$-approximation algorithm for unweighted 3-Set Packing.
@@ -26,73 +29,68 @@ The algorithm considers three disjoint settings:
 
 Let the optimal solution contain:
 \begin{itemize}
-    \item $a$ subsets of size 4,
-    \item $b$ subsets of size 3,
-    \item $c$ subsets of size 2.
+    \item $a$ subsets of size 4
+    \item $b$ subsets of size 3
+    \item $c$ subsets of size 2
 \end{itemize}
 Then:
 \[
-\mathrm{OPT} = 4a + 3b + 2c.
+\mathrm{OPT} = 4a + 3b + 2c
 \]
-
 The algorithm achieves:
 \[
-\mathrm{ALG} = \max\left(\tfrac{12}{5} a,\ \tfrac{9}{4}(a + b),\ 2(a + b + c)\right).
+\mathrm{ALG} = \max\left(\tfrac{12}{5} a,\ \tfrac{9}{4}(a + b),\ 2(a + b + c)\right)
 \]
-
-To lower-bound $\mathrm{ALG}$ in terms of $\mathrm{OPT}$, introduce weights $t_1, t_2 \ge 0$ with $t_1 + t_2 \le 1$, such that:
+To lower-bound $\mathrm{ALG}$ in terms of $\mathrm{OPT}$, we introduce weights $t_1, t_2 \ge 0$ with $t_1 + t_2 \le 1$, such that:
 \[
-\mathrm{ALG} \ge \tfrac{12}{5} t_1 a + \tfrac{9}{4} t_2 (a + b) + 2(1 - t_1 - t_2)(a + b + c).
+\begin{aligned}
+    \mathrm{ALG} &\ge \tfrac{12}{5} t_1 a + \tfrac{9}{4} t_2 (a + b) + 2(1 - t_1 - t_2)(a + b + c) \\
+    &= \left(2 + \tfrac{2}{5} t_1 + \tfrac{1}{4} t_2\right) a
+    + \left(2 - 2t_1 + \tfrac{1}{4} t_2\right) b
+    + \left(2 - 2t_1 - 2t_2\right) c
+\end{aligned}
 \]
-
 We seek the largest constant $k$ such that:
 \[
-\mathrm{ALG} \ge k \cdot \mathrm{OPT} = 4ka + 3kb + 2kc.
+\mathrm{ALG} \ge k \cdot \mathrm{OPT} = 4ka + 3kb + 2kc
 \]
-
-Expanding gives:
-\[
-\mathrm{ALG} \ge \left(2 + \tfrac{2}{5} t_1 + \tfrac{1}{4} t_2\right) a
-+ \left(2 - 2t_1 + \tfrac{1}{4} t_2\right) b
-+ \left(2 - 2t_1 - 2t_2\right) c.
-\]
-
 The corresponding linear program is:
 \[
 \begin{aligned}
 \text{maximize} \quad & k \\
 \text{subject to} \quad
-& 2 + \tfrac{2}{5} t_1 + \tfrac{1}{4} t_2 \ge 4k, \\
-& 2 - 2t_1 + \tfrac{1}{4} t_2 \ge 3k, \\
-& 2 - 2t_1 - 2t_2 \ge 2k, \\
-& t_1 \ge 0,\ t_2 \ge 0,\ t_1 + t_2 \le 1.
+& 2 + \tfrac{2}{5} t_1 + \tfrac{1}{4} t_2 \ge 4k \\
+& 2 - 2t_1 + \tfrac{1}{4} t_2 \ge 3k \\
+& 2 - 2t_1 - 2t_2 \ge 2k \\
+& t_1 \ge 0,\ t_2 \ge 0,\ t_1 + t_2 \le 1
 \end{aligned}
 \]
-
 Solving yields:
 \[
-\boxed{k = \frac{36}{67} \approx 0.5373.}
+\boxed{k = \frac{36}{67} \approx 0.5373}
 \]
+
+Note that the approximation algorithm for unweighted 3-Set Packing does not exactly achieve a $\frac{3}{4}$ approximation, but can get arbitrarily close to it. Consequently, our overall algorithm cannot guarantee a $\frac{36}{67}$ approximation ratio, but it can approach this bound arbitrarily closely.
+
 \end{proof}
 
 \section{Hardness of Approximation}
 
-Based on the two reductions in \autoref{cha:computational_complexity_analysis}, we can also get some results for the  hardness of approximation.
 
 \begin{lemma}
-For any fixed constant $k \ge 2$, the maximization version of the \textsc{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} cannot be approximated within any constant factor.
+For any fixed constant $k \ge 2$, the maximization version of the \textit{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} cannot be approximated within any constant factor.
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
-We reduce from the \textsc{Longest Path from Fixed Source} problem as shown in \autoref{cha:computational_complexity_analysis}. The number of matched patients is proportional to the length of a simple path in the original graph. Therefore, any approximate solution to the exchange problem would yield a comparable approximation for the longest path problem, violating its known inapproximability bounds.
+We reduce from the \textit{Longest Path from Fixed Source} problem as shown in \autoref{cha:computational_complexity_analysis}. The number of matched patients is proportional to the length of a simple path in the original graph. Therefore, any approximate solution to the exchange problem would yield a comparable approximation for the longest path problem, violating its known inapproximability bounds.
 \end{proof}
 
 \begin{lemma}
-The \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} cannot be approximated within a factor better than $7/8$, unless $\mathrm{P} = \mathrm{NP}$.
+The \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} cannot be approximated within a factor better than $7/8$, unless $\mathrm{P} = \mathrm{NP}$.
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
-We reduce from the \textsc{MAX-(2P,2N)-3SAT} problem, which is known to be APX-hard with no approximation ratio better than $7/8$~\cite{berman2003restricted}. The construction is same to reduction in \autoref{cha:computational_complexity_analysis}. Hence, a better-than-$7/8$ approximation for our problem would imply the same for \textsc{MAX-(2P,2N)-3SAT}, contradicting its known hardness.
+We reduce from the \textit{MAX-(2P,2N)-3SAT} problem, which is known to be APX-hard with no approximation ratio better than $7/8$~\cite{berman2003restricted}. The construction is the same as the one used in reduction in \autoref{cha:computational_complexity_analysis}. Hence, a better-than-$7/8$ approximation for our problem would imply the same for \textit{MAX-(2P,2N)-3SAT}, contradicting its known hardness.
 \end{proof}
 
 

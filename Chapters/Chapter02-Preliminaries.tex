@@ -18,7 +18,7 @@ Complexity theory typically studies decision problems, particularly those in the
 
 A decision problem is said to be in NP (nondeterministic polynomial time) if a proposed solution can be verified in polynomial time. A problem is NP-complete if it is both in NP and as hard as any other problem in NP, meaning that every problem in NP can be reduced to it in polynomial time. NP-complete problems are believed to be intractable in the worst case—that is, they are unlikely to have polynomial-time algorithms.
 
-To prove that a problem is NP-complete, it is common to reduce from a known NP-complete problem, such as \textsc{3SAT}, \textsc{Hamiltonian Path}, or \textsc{Longest Simple Path}. In this thesis, we use such reductions to establish the hardness of several matching problems in the kidney exchange setting.
+To prove that a problem is NP-complete, it is common to reduce from a known NP-complete problem, such as \textit{3SAT}, \textit{Hamiltonian Path}, or \textit{Longest Simple Path}. In this thesis, we use such reductions to establish the hardness of several matching problems in the kidney exchange setting.
 
 \subsection*{Approximation and Inapproximability}
 
@@ -34,18 +34,18 @@ Some NP-hard problems admit good approximation algorithms, while others are hard
 Given a directed graph $G = (V, E)$, a designated source vertex $s \in V$, and an integer $k$, decide whether there exists a simple path starting from $s$ of length at least $k$.
 \end{problem}
 
-This problem is NP-complete in general directed graphs, by a standard reduction from the \textsc{Hamiltonian Path} problem \cite{garey1979computers}.
+This problem is NP-complete in general directed graphs, by a standard reduction from the \textit{Hamiltonian Path} problem \cite{garey1979computers}.
 
-Moreover, the \textsc{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, no polynomial-time algorithm can find a constant-factor approximation for the longest path problem unless $\text{P} = \text{NP}$~\cite{karger1997approximating}. 
+Moreover, the \textit{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, no polynomial-time algorithm can find a constant-factor approximation for the longest path problem unless $\text{P} = \text{NP}$~\cite{karger1997approximating}. 
 
 \begin{problem}[2P2N-3SAT]
 \label{prob:2p2n_3sat}
 Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in at most two positive literals and at most two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
 \end{problem}
 
-This problem is a well-known restriction of the classical \textsc{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2004approximation}.
+This problem is a well-known restriction of the classical \textit{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2004approximation}.
 
-In addition to being NP-complete, the \textsc{2P2N-3SAT} problem remains APX-hard~\cite{berman2004approximation}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$. Despite the bounded number of occurrences per variable, the best-known approximation ratio remains at most $7/8$, the same as for general \textsc{MAX-3SAT}~\cite{hastad2001optimal}.
+In addition to being NP-complete, the \textit{2P2N-3SAT} problem remains APX-hard~\cite{berman2004approximation}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$. Despite the bounded number of occurrences per variable, the best-known approximation ratio remains at most $7/8$, the same as for general \textit{MAX-3SAT}~\cite{hastad2001optimal}.
 
 
 \begin{problem}[$k$-Set Packing]
@@ -54,7 +54,7 @@ In addition to being NP-complete, the \textsc{2P2N-3SAT} problem remains APX-har
 Given a finite universe $U$ and a collection $\mathcal{S}$ of subsets of $U$, where each subset has cardinality at most $k$, find a maximum-size subcollection $\mathcal{S}' \subseteq \mathcal{S}$ such that all sets in $\mathcal{S}'$ are pairwise disjoint.
 \end{problem}
 
-This classical optimization problem is known to be NP-hard for any $k \geq 3$, and it remains hard to approximate. Cygan~\cite{cygan2013improved} presented an algorithm that, for any $\varepsilon > 0$, achieves a $\frac{k + 1 + \varepsilon}{3}$ approximation ratio. The algorithm runs in time polynomial in the number of sets and elements.
+This classical optimization problem is known to be NP-hard for any $k \geq 3$, and it remains hard to approximate. Cygan~\cite{cygan2013improved} presented an algorithm that, for any $\varepsilon > 0$, achieves a $\frac{3}{k + 1 + \varepsilon}$ approximation ratio. The algorithm runs in time polynomial in the number of sets and elements.
 
 %In particular, Hazan et al.~\cite{hazan2006complexity} showed that the problem admits a polynomial-time $\frac{3}{k+1}$-approximation algorithm, which is tight under standard complexity assumptions. For example, when $k=4$, the best known approximation ratio is $3/5$.
 

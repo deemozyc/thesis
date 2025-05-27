@@ -26,7 +26,7 @@ The random graph model we use for the experiment was inspired by the one introdu
         \:
 
         \If{ $\forall donor\_type \in donor\_types$ ($patient\_type$\textup{ is incompatible with }$donor\_type$ \textup{ or } $random() < p_c$)}{
-            $G \gets G \cup \{(patient\_type, donors\_types)\}$\;
+            $D \gets D \cup \{(patient\_type, donors\_types)\}$\;
         }
     }
     \Return{D}
@@ -40,7 +40,7 @@ The random graph model we use for the experiment was inspired by the one introdu
     \KwIn{$D$: patient-donor groups, $p_c$: tissue incompatibility factor}
     \KwOut{$E_c$: compatibility edges}
 
-    $E \gets \emptyset$\;
+    $E_c \gets \emptyset$\;
     \ForEach{$(p_i, donors_i) \in D$}{
         \ForEach{$(p_j, donors_j) \in D$ where $i \neq j$}{
             \ForEach{$d \in donors_i$}{
@@ -69,10 +69,10 @@ The graph we generate can be adapted to the model with only one donor per group 
 
 In this section, we present the experimental evaluation of our proposed model. We aim to investigate the practical impact of allowing multiple donors per patient under different kidney exchange settings.
 
-Our focus is on the \textsc{2-Cycle 1-Chain Multi-Donor Kidney Exchange Model}. For comparison, we include two baseline models:
+Our focus is on the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Model}. For comparison, we include two baseline models:
 \begin{itemize}
-\item \textsc{2-Cycle No-Chain Multi-Donor Model}, where each patient may have up to two donors, but at most one donor can be used, and only 2-cycles are allowed.
-\item \textsc{Single-Donor 2-Cycle Model}, the classical setting where each patient has exactly one donor and only disjoint 2-cycles are permitted.
+\item \textit{2-Cycle No-Chain Multi-Donor Model}, where each patient may have up to two donors, but at most one donor can be used, and only 2-cycles are allowed.
+\item \textit{Single-Donor 2-Cycle Model}, the classical setting where each patient has exactly one donor and only disjoint 2-cycles are permitted.
 \end{itemize}
 
 Given an input instance (represented as a compatibility graph), we first reduce the problem to a \emph{set packing} formulation as discussed in \autoref{prob:k_set_packing}, by enumerating all feasible 2-cycles and attaching all valid length-1 chains.
@@ -84,13 +84,13 @@ CPLEX is capable of computing optimal solutions efficiently in most cases; howev
 
 For the experimental analysis, we investigate two key questions.
 
-First, we examine how the percentage of patients matched changes as the total number of patients increases across the three models. Our expectation is that the match rate will increase slightly with the number of patients, due to more potential matches being available. However, we do not expect a significant increase, since the compatibility graph is already fairly dense.
+First, we examine how the percentage of patients matched changes as the total number of patients increases across the three models. Our expectation is that the match rate will increase slightly with the number of patients, due to more potential matches being available. However, we do not expect a significant increase, since the compatibility graph is already fairly dense. 
 
 Second, we analyze how the match rate varies with the proportion of patients having a second donor. Specifically, we hypothesize the following trends:
 \begin{itemize}
-\item For the \textsc{Single-Donor 2-Cycle Model}, the match rate may slightly decrease. As discussed earlier, increasing the second-donor ratio changes the underlying distribution, making it harder to match patients in this limited model.
-\item For the \textsc{2-Cycle No-Chain Multi-Donor Model}, the effect is ambiguous: while the increased donor pool may improve match opportunities, the changing distribution may counteract this benefit.
-\item For the \textsc{2-Cycle 1-Chain Multi-Donor Model}, we expect a clear increase in the match rate, as the additional donors provide more opportunities to initiate chains.
+\item For the \textit{Single-Donor 2-Cycle Model}, the match rate may slightly decrease. As discussed earlier, increasing the second-donor ratio changes the underlying distribution, making it harder to match patients in this limited model.
+\item For the \textit{2-Cycle No-Chain Multi-Donor Model}, the effect is ambiguous: while the increased donor pool may improve match opportunities, the changing distribution may counteract this benefit.
+\item For the \textit{2-Cycle 1-Chain Multi-Donor Model}, we expect a clear increase in the match rate, as the additional donors provide more opportunities to initiate chains.
 \end{itemize}
 
 
@@ -98,7 +98,21 @@ Second, we analyze how the match rate varies with the proportion of patients hav
 \section{Results}
 
 
-The following two figures present the experimental results. As expected, all observed trends are consistent with our hypotheses. Notably, the \textsc{2-Cycle 1-Chain Multi-Donor Model} achieves a substantial improvement over the \textsc{Single-Donor 2-Cycle Model}, increasing the match rate by nearly $10\%$.
+The following two figures present the experimental results. The transparent region around the curve indicates the variance across runs. As expected, all observed trends are consistent with our hypotheses. Notably, the \textit{2-Cycle 1-Chain Multi-Donor Model} achieves a substantial improvement over the \textit{Single-Donor 2-Cycle Model}, increasing the match rate by nearly $10\%$.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\linewidth]{data/test}
+    \caption[average \% of satisfied patients vs double donor ratio]{average \% of satisfied patients vs double donor ratio}
+    \label{fig:test}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\linewidth]{data/test2}
+    \caption[average \% of satisfied patients vs double donor ratio]{average \% of satisfied patients vs number of patients}
+    \label{fig:test2}
+\end{figure}
 
 Regarding computational efficiency, we observe that for most instances—up to one thousand patients—the optimal solution can be computed within one minute on a standard laptop. More specifically, out of 1,100 instances, only four exceeded the timeout threshold. This indicates that computational resources are unlikely to pose a practical bottleneck for applying our model in real-world scenarios.
 
