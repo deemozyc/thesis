@@ -50,7 +50,7 @@ An example instance of \textit{Longest Path from Fixed Source} problem and its c
 \begin{figure}
     \centering
     \includegraphics{data/longest_path_graph_example.pdf}
-    \caption[An example instance of \textit{Longest Path from Fixed Source} problem and its corresponding reduction to the instance of the \textit{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem]{\textbf{(a)} shows an example graph instance of \textit{Longest Path from Fixed Source} problem, where the longest path $(s \rightarrow 2 \rightarrow 1 \rightarrow t)$ has length 3. \textbf{(b)} illustrates the same graph represented in the \textit{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem and the corresponding optimal solution. The orange 2-cycle on the left initiates the longest available chain consisting of 7 transplantations. The solution sums up to 9 patients saved in total.}
+    \caption[An example instance of \textit{Longest Path from Fixed Source} problem and its corresponding reduction to the instance of the \textit{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem]{\textbf{(a)} shows an example graph instance of \textit{Longest Path from Fixed Source} problem, where the longest path $(s \rightarrow 2 \rightarrow 1 \rightarrow 3)$ has length 3. \textbf{(b)} illustrates the same graph represented in the \textit{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange} problem and the corresponding optimal solution. The orange 2-cycle on the left initiates the longest available chain consisting of 7 transplantations. The solution sums up to 9 patients saved in total.}
     \label{fig:longest_path_graph_example}
 \end{figure}
 
@@ -95,8 +95,8 @@ In the construction, each clause $c \in C$ is represented as a patient-donor pai
 \begin{figure}
     \centering
     \includegraphics{data/sat_reduction_boolean_gadget.pdf}
-    \caption[]{}
-    \label{fig:sat_reduction_boolean_gadget}
+    \caption[Boolean variable gadget used in the reduction from \textit{2P2N 3-SAT} to the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}]{Boolean variable gadget used in the reduction from \textit{2P2N 3-SAT} to the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}.\\
+    \textbf{(a)} The full variable gadget, representing variable \(x\). \textbf{(b)} An assignment where the variable is set to \texttt{true}, \textbf{(c)} An assignment where the variable is set to \texttt{false}. Only one of these two assignments can be selected in a valid matching, ensuring that either \(x\) or \(\neg{x}\) is selected, but not both.}
 \end{figure}
 
 In \autoref{fig:sat_reduction_boolean_gadget}, notice that no matter which pair of cycles is selected, the four patients $p_1$, $p_2$, $p_3$, and $p_4$ always receive compatible kidneys. If $\phi$ is satisfiable, then in our construction all patients representing clauses ${ p_c : c \in C }$ receive compatible kidneys in every optimal solution. Conversely, if $\phi$ is not satisfiable, then in every solution there exists at least one patient representing a clause who does not receive a compatible kidney. This gives rise to the threshold $t = 4 \cdot |X| + |C|$, indicating that the solution to the constructed instance of the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} satisfies $t$ patients if and only if $\phi$ is satisfiable.
@@ -125,8 +125,8 @@ Hence, the decision version of the \textit{n-Cycle m-Chain Multi-Donor Kidney Ex
 \begin{figure}
     \centering
     \includegraphics{data/sat_reduction_boolean_gadget2.pdf}
-    \caption[]{}
-    \label{fig:sat_reduction_boolean_gadget2}
+    \caption[Boolean variable gadget used in the reduction from \textit{2P2N 3-SAT} to the \textit{$n$-Cycle $m$-Chain Multi-Donor Kidney Exchange Problem}]{Boolean variable gadget used in the reduction from \textit{2P2N 3-SAT} to the \textit{$n$-Cycle $m$-Chain Multi-Donor Kidney Exchange Problem}.\\
+    \textbf{(a)} The full variable gadget, representing variable \(x\). \textbf{(b)} and \textbf{(c)} are assignments where the variable is set to \texttt{true} and \texttt{false} respectively.}\label{fig:sat_reduction_boolean_gadget2}
 \end{figure}
 
 \end{proof}

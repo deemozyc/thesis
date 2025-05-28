@@ -7,7 +7,7 @@ This chapter introduces the formal model that underpins this thesis. We consider
 
 We begin by reviewing a model which is commonly used in kidney exchange literature. In the model, each node represents a \textit{patient-donor pair}, and each directed edge indicates that the donor in the source node is compatible with the patient in the target node. This results in an unweighted directed graph $G = (V, E)$. Depending on the specific problem setting (such as restrictions on the length of allowed exchange cycles) this formulation leads to different variants of graph matching problems. In general, however, the objective is to find disjoint exchange cycles that include the maximum number of patients.
 
-Extending the model to the version where each patient is associated with multiple \textit{alternative donors} is straightforward. In this extension, each patient along with all his associated proxy donors is still represented as a single node in the graph. The compatibility edges are then defined such that a directed edge from node $u$ to node $v$ exists if any of the donors associated with patient $u$ is compatible with the patient in node $v$. This preserves the structure of the original graph as a directed graph $G = (V, E)$, but with a potentially denser set of edges due to the increased number of donor-patient compatibility possibilities. This setting is then identical to the standard patient-donor pair \ac{KE} problem: the objective is still to find disjoint exchange cycles in a directed compatibility graph.
+Extending the model to the version where each patient is associated with multiple \textit{alternative donors} is straightforward. In this extension, each patient along with all his associated proxy donors is still represented as a single node in the graph. The compatibility edges are then defined such that a directed edge from node $u$ to node $v$ exists if any of the donors associated with patient $u$ is compatible with the patient in node $v$. This preserves the structure of the original graph as a directed graph $G = (V, E)$, but with a potentially denser set of edges due to the increased number of donor-patient compatibility possibilities. This setting is then identical to the standard patient-donor pair KE problem: the objective is still to find disjoint exchange cycles in a directed compatibility graph.
 
 A more general scenario arises if we allow a patient to receive a kidney while all of their associated donors are permitted to donate simultaneously. We call this model \textit{multiple donors} model. How this model relates to other kidney exchange models is shown in \autoref{fig:models_hierarchy}. In this case, one of the donors may participate in an exchange cycle as usual, while other donor initiate a donation chains, effectively increasing the total number of transplants.
 
@@ -90,13 +90,19 @@ We then consider a more constrained version, where limits are placed on the maxi
 
 The problem we consider has a structured, graph-like nature. This subsection explores how our model connects to classical problem frameworks, providing alternative perspectives that inform both algorithmic design and empirical evaluation.
 
+\subsection{Weighted Set Packing}
+
 \label{pro:weighted_set_packing}
 
 One useful interpretation frames our problem as a special case of the \emph{weighted set packing} problem. Each feasible subset corresponds to a valid exchange (either a cycle or a cycle followed by chain(s)) with the constraint that no individual (patient or donor) can appear in more than one subset. The objective is to select a collection of disjoint subsets that maximizes the total number of patients matched, which defines the weight of each subset. We adopt this perspective in the design of a randomized mechanism presented in \autoref{cha:approximation}.
 
 
-Additionally, our problem can be formulated as an \emph{integer linear program (ILP)}, also inspired by the set packing view. In the experimental section \autoref{cha:Experiments}, we implement and solve such an ILP to evaluate the practical effectiveness and scalability of our approach.
-\section{Integer Linear Program Formulation}
+
+
+\subsection{Integer Linear Program Formulation}
+Additionally, our problem can be formulated as an \emph{integer linear program (ILP)}. In the experimental section \autoref{cha:Experiments}, we implement and solve such an ILP to evaluate the practical effectiveness and scalability of our approach.
+
+%Following is integer linear program formulation for \textit{2-cycle 1-chain kidney exchange problem}, which will be used in \autoref{cha:Experiments}.
 
 Let:
 \begin{itemize}
