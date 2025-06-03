@@ -36,7 +36,8 @@ Given a directed graph $G = (V, E)$, a designated source vertex $s \in V$, and a
 
 This problem is NP-complete in general directed graphs, by a standard reduction from the \textit{Hamiltonian Path} problem \cite{garey1979computers}.
 
-Moreover, the \textit{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, no polynomial-time algorithm can find a constant-factor approximation for the longest path problem unless $\text{P} = \text{NP}$~\cite{karger1997approximating}. 
+Moreover, the \textit{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, cannot be polynomial time approximated
+within $n^{1-\varepsilon}$ for any $\varepsilon  > 0$ unless $\text{P} = \text{NP}$~\cite{bjorklund2004approximating}.
 
 \begin{problem}[2P2N-3SAT]
 \label{prob:2p2n_3sat}
@@ -45,7 +46,7 @@ Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clau
 
 This problem is a well-known restriction of the classical \textit{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2004approximation}.
 
-In addition to being NP-complete, the \textit{2P2N-3SAT} problem remains APX-hard~\cite{berman2004approximation}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$. Despite the bounded number of occurrences per variable, the best-known approximation ratio remains at most $7/8$, the same as for general \textit{MAX-3SAT}~\cite{hastad2001optimal}.
+In addition to being NP-complete, the \textit{2P2N-3SAT} problem remains APX-hard~\cite{berman2004approximation}. Its maximization variant, which seeks to satisfy as many clauses as possible, admits no polynomial-time approximation scheme (PTAS), unless $\text{P} = \text{NP}$.
 
 
 \begin{problem}[$k$-Set Packing]

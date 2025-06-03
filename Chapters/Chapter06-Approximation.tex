@@ -12,7 +12,8 @@ A natural baseline heuristic is to select only disjoint 2-cycles and ignore all 
 
 To improve upon the baseline, we reinterpret our problem as a special case of the \textit{weighted $k$-Set Packing problem}. Details in \autoref{pro:weighted_set_packing}. %, where each feasible exchange, comprising a 2-cycle and up to two chains, is encoded as a subset of at most four patients. And the weight is the number of patients. 
 
-We now describe a hybrid algorithm that combines multiple such approximations to achieve a provable bound strictly better than $0.5$. The algorithm is based on \autoref{prob:k_set_packing}. We introduced that an algorithm that, for any $\varepsilon > 0$, achieves a $\frac{3}{k + 1 + \varepsilon}$ approximation ratio. 
+We now describe a hybrid algorithm that combines multiple such approximations to achieve a provable bound strictly better than $0.5$. 
+We mentioned a polynomial time algorithm solving \autoref{prob:k_set_packing}, achieving $\frac{3}{k + 1 + \varepsilon}$ approximation ratio for any $\varepsilon > 0$. Based on this, we introduce the following algorithm.
 
 \begin{lemma}
 The following algorithm achieves an approximation ratio of at least $\frac{36}{67} - \varepsilon$ for any $\varepsilon > 0$ for the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}.
@@ -78,7 +79,8 @@ Note that the approximation algorithm for unweighted 3-Set Packing does not exac
 
 
 \begin{lemma}
-For any fixed constant $k \ge 2$, the maximization version of the \textit{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} cannot be approximated within any constant factor.
+For any fixed constant $k \ge 2$, the maximization version of the \textit{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} cannot be polynomial time approximated
+within $n^{1-\varepsilon}$ for any $\varepsilon  > 0$ unless $\text{P} = \text{NP}$.
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
@@ -86,11 +88,11 @@ We reduce from the \textit{Longest Path from Fixed Source} problem as shown in \
 \end{proof}
 
 \begin{lemma}
-The \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} cannot be approximated within a factor better than $7/8$, unless $\mathrm{P} = \mathrm{NP}$.
+The \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} is APX-hard.
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
-We reduce from the \textit{MAX-(2P,2N)-3SAT} problem, which is known to be APX-hard with no approximation ratio better than $7/8$~\cite{berman2003restricted}. The construction is the same as the one used in reduction in \autoref{cha:computational_complexity_analysis}. Hence, a better-than-$7/8$ approximation for our problem would imply the same for \textit{MAX-(2P,2N)-3SAT}, contradicting its known hardness.
+We reduce from the \textit{MAX-(2P,2N)-3SAT} problem, which is known to be APX-hard. The construction is the same as the one used in the reduction in \autoref{cha:computational_complexity_analysis}. 
 \end{proof}
 
 
