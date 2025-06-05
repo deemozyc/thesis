@@ -19,7 +19,7 @@ Subsequently, we show that for all $n \in \{n : n \ge 2\} \cup \{\infty\}$ and $
 
 In this section, we formally establish the computational hardness of the matching problems defined in our multi-donor kidney exchange model. Specifically, we show that even under simple structural constraints (such as allowing only one 2-cycle and unrestricted chains) the decision version of the problem remains NP-complete. 
 
-\subsection{NP-completeness of the 2-Cycle Unbounded-Chain Problem}
+\subsection{NP-Completeness of the 2-Cycle Unbounded-Chain Problem}
 
 \begin{lemma}
 The decision version of the \textit{2-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
@@ -62,7 +62,7 @@ Membership in NP is immediate, since a proposed matching (i.e., a set of selecte
 We now extend the previous hardness result to two broader settings, where the constraint on the length of cycles is generalized from length 2 to an arbitrary constant $n \ge 2$.
 
 \begin{lemma}
-For any fixed constant $n \ge 2$, the decision version of the \textit{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
+For any fixed constant $n \ge 2$, the decision version of the \textit{$n$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} is NP-complete.
 \end{lemma}
 
 \begin{proof}[Proof Sketch]
@@ -89,14 +89,11 @@ We prove NP-hardness via a reduction from the \textit{2P2N-3-SAT} problem. Let $
 
 In the construction, each clause $c \in C$ is represented as a patient-donor pair $(p_c, d_c)$. For each variable $x \in X$, we construct a special gadget illustrated in \autoref{fig:sat_reduction_boolean_gadget}. The gadget consists of patient-donor groups forming four overlapping cycles and four patient-donor pairs representing two negative literals ($\neg{x}$) and two positive literals ($x$). The gadget is designed so that either the two patients representing the positive literals $p_x$ are satisfied (as shown in \textbf{(b)}), or the two patients representing the negative literals $p_{\neg{x}}$ are satisfied (as shown in \textbf{(c)}), but never both $p_x$ and $p_{\neg{x}}$ simultaneously. The patients representing clauses and those representing literals are the same nodes in our construction. For example, given a clause $c = (x_1, \neg{x_2}, x_3)$, we identify $p_c = p_{x_1} = p_{\neg{x_2}} = p_{x_3}$.
 
-% Each patient can represent only one clause, and if a patient representing a literal is not associated with any clause, we omit that patient and their corresponding proxy donor from the construction.
-
-
 \begin{figure}
     \centering
     \includegraphics{data/sat_reduction_boolean_gadget.pdf}
     \caption[Boolean variable gadget used in the reduction from \textit{2P2N 3-SAT} to the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}]{Boolean variable gadget used in the reduction from \textit{2P2N 3-SAT} to the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}.\\
-    \textbf{(a)} The full variable gadget, representing variable \(x\). \textbf{(b)} An assignment where the variable is set to \texttt{true}, \textbf{(c)} An assignment where the variable is set to \texttt{false}. Only one of these two assignments can be selected in a valid matching, ensuring that either \(x\) or \(\neg{x}\) is selected, but not both.}
+    \textbf{(a)} The full variable gadget, representing variable \(x\). \textbf{(b)} An assignment where the variable is set to \texttt{true}, \textbf{(c)} An assignment where the variable is set to \texttt{false}. Only one of these two assignments can be selected in a valid matching, ensuring that either \(x\) or \(\neg{x}\) is selected, but not both.}\label{fig:sat_reduction_boolean_gadget}
 \end{figure}
 
 In \autoref{fig:sat_reduction_boolean_gadget}, notice that no matter which pair of cycles is selected, the four patients $p_1$, $p_2$, $p_3$, and $p_4$ always receive compatible kidneys. If $\phi$ is satisfiable, then in our construction all patients representing clauses ${ p_c : c \in C }$ receive compatible kidneys in every optimal solution. Conversely, if $\phi$ is not satisfiable, then in every solution there exists at least one patient representing a clause who does not receive a compatible kidney. This gives rise to the threshold $t = 4 \cdot |X| + |C|$, indicating that the solution to the constructed instance of the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem} satisfies $t$ patients if and only if $\phi$ is satisfiable.

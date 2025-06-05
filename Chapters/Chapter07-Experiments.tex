@@ -3,7 +3,7 @@
 
 
 \section{The Random Graph Model}
-The random graph model we use for the experiment was inspired by the one introduced in \cite{toulis2011random}. It was designed for generating patient-donor pairs based on a fixed blood type distribution and tissue-type compatibility factor $1 - p_c = 0.8$. In our setting, we consider patient-donors groups with up to two proxy donors, so the already existing random graph model had to be modified in order to fit our requirements. We introduce a new variable; \textit{double donor ratio} ($ddr$), which represents the percentage of patient-donor groups with two proxy donors. The mount of information about what $ddr$ is in the real world KE programs is very small, \cite{holscher2018kidney} reports that only $7.3\%$ candidates registered with more than one potential donor. The following are the algorithms we use for generating random patient-donors groups (\autoref{alg:generate_patient_donors}) and the compatibility edges between them (\autoref{alg:generate_compatibility_edges})
+The random graph model we use for the experiment was inspired by the one introduced in \cite{toulis2011random}. It was designed for generating patient-donor pairs based on a fixed blood type distribution and tissue-type compatibility factor $1 - p_c = 0.8$. In our setting, we consider patient-donors groups with up to two proxy donors, so the already existing random graph model had to be modified in order to fit our requirements. We introduce a new variable; \textit{double donor ratio} ($ddr$), which represents the percentage of patient-donor groups with two proxy donors. The amount of information about what $ddr$ is in the real-world KE programs is limited, \cite{holscher2018kidney} reports that only $7.3\%$ candidates registered with more than one potential donor. The following are the algorithms we use for generating random patient-donors groups (\autoref{alg:generate_patient_donors}) and the compatibility edges between them (\autoref{alg:generate_compatibility_edges})
 
 \begin{algorithm}
     \caption{Generate patient-donor groups with multiple donors}
@@ -54,7 +54,7 @@ The random graph model we use for the experiment was inspired by the one introdu
     \Return{$E_c$}
 \end{algorithm}
 
-The graph we generate can be adapted to the model with only one donor per group by either randomly removing one of the proxy donors from each group containing two proxy donors, or by setting the parameter $ddr$ to $0$ (which is equivalent to the model described in \cite{toulis2011random}). Importantly, these two methods produce models of KE programs with different blood type distributions. Notably, as $ddr$ increases, the percentage of patients with an unfavorable blood type (‘O’) also increases, as shown in \autoref{fig:patient_blood_type_as_ddr_increases}. In our experiments, when comparing the model with one proxy donor per patient to the model with multiple donors, we use the first method.
+The graph we generate can be adapted to the model with only one donor per group by either randomly removing one of the proxy donors from each group containing two proxy donors, or by setting the parameter $ddr$ to $0$ (which is equivalent to the model described in \cite{toulis2011random}). Importantly, these two methods produce models of KE programs with different blood type distributions. Notably, as $ddr$ increases, the percentage of patients with an unfavorable blood type (‘O’) also increases, as shown in \autoref{fig:patient_blood_type_as_ddr_increases}.
 
 \begin{figure}[H]
     \centering
@@ -64,56 +64,58 @@ The graph we generate can be adapted to the model with only one donor per group 
 \end{figure}
 
 
-\section{Experiment Introduction}
+\section{Experiment Preview}
 
 In this section, we present the experimental evaluation of our proposed model. We aim to investigate the practical impact of allowing multiple donors per patient under different kidney exchange settings.
 
-Our focus is on the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Model}. For comparison, we include two baseline models:
-\begin{itemize}
-\item \textit{2-Cycle No-Chain Multi-Donor Model}, where each patient may have up to two donors, but at most one donor can be used, and only 2-cycles are allowed.
-\item \textit{Single-Donor 2-Cycle Model}, the classical setting where each patient has exactly one donor and only disjoint 2-cycles are permitted.
-\end{itemize}
+Our focus is on the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Model}. For comparison, we include \textit{2-Cycle No-Chain Multi-Donor Model} (\textit{Alternative-Donors Model}), where each patient may have up to two donors, but at most one donor can be used, and only 2-cycles are allowed.
 
-Given an input instance (represented as a compatibility graph), we first reduce the problem to a \emph{set packing} formulation as discussed in \autoref{prob:k_set_packing}, by enumerating all feasible 2-cycles and attaching all valid length-1 chains.
-
-We then formulate the resulting problem as an instance of integer programming and solve it using IBM ILOG CPLEX Optimizer~\cite{cplex}.
+We then formulate the resulting problem as an instance of integer programming introduced in \autoref{sec:Integer Linear Program Formulation} and solve it using IBM ILOG CPLEX Optimizer~\cite{cplex}.
 
 CPLEX is capable of computing optimal solutions efficiently in most cases; however, it does not guarantee short runtimes for all instances. Therefore, we set a timeout threshold: if a single task runs for more than 12 minutes, it is terminated and excluded from the results.
 
 
 For the experimental analysis, we investigate two key questions.
+\begin{experiment}
+    \label{exp:percentage_vs_number_of_patients}
+    \textup{We examine how the percentage of patients matched changes as the total number of patients increases across the two models. We expect the match rates for both of them to increase slightly as the number of patients grows, due to more potential matches being available. However, we do not expect a significant increase, since the compatibility graph is already fairly dense. We expect that as the number of patients increases, the variance will decrease.}
+\end{experiment}
 
-First, we examine how the percentage of patients matched changes as the total number of patients increases across the three models. Our expectation is that the match rate will increase slightly with the number of patients, due to more potential matches being available. However, we do not expect a significant increase, since the compatibility graph is already fairly dense. We expect that as the number of patients increases, the variance will decrease.
+\begin{experiment}
+    \label{exp:percentage_vs_ddr}
+    \textup{
+    We analyze how the match rate varies with the proportion of patients having a second donor. Specifically, we hypothesize the following trends:
+    \begin{itemize}
+    \item For the \textit{2-Cycle No-Chain Multi-Donor Model}, the effect is ambiguous: while the increased donor pool may improve match opportunities, the changing distribution may counteract this benefit.
+    \item For the \textit{2-Cycle 1-Chain Multi-Donor Model}, we expect a clear increase in the match rate, as the additional donors provide more opportunities to initiate chains.
+    \end{itemize}
+    }
 
-Second, we analyze how the match rate varies with the proportion of patients having a second donor. Specifically, we hypothesize the following trends:
-\begin{itemize}
-\item For the \textit{Single-Donor 2-Cycle Model}, the match rate may slightly decrease. As discussed earlier, increasing the second-donor ratio changes the underlying distribution, making it harder to match patients in this limited model.
-\item For the \textit{2-Cycle No-Chain Multi-Donor Model}, the effect is ambiguous: while the increased donor pool may improve match opportunities, the changing distribution may counteract this benefit.
-\item For the \textit{2-Cycle 1-Chain Multi-Donor Model}, we expect a clear increase in the match rate, as the additional donors provide more opportunities to initiate chains.
-\end{itemize}
+\end{experiment}
 
 
 
 \section{Results}
 
 
-The following two figures present the experimental results. The transparent region around the curve indicates the variance across runs. In the first experiment, the number of patients is fixed to 1000. In the second experiment, the double donor rate is fixed to $10\%$.
+The following two figures (\autoref{fig:test2} and \autoref{fig:test}) present the experimental results. The semi-transparent region around the curve indicates the variance across runs. In the first experiment, the number of patients is fixed to 1000. In the second experiment, the double donor rate is fixed to $10\%$.
 
-As expected, all observed trends are consistent with our hypotheses. Notably, the \textit{2-Cycle 1-Chain Multi-Donor Model} achieves a substantial improvement over the \textit{Single-Donor 2-Cycle Model}, increasing the match rate by nearly $10\%$.
-
-\begin{figure}[H]
-    \centering
-    \includesvg[width=\linewidth]{data/test}
-    \caption[average \% of satisfied patients vs double donor ratio]{average \% of satisfied patients vs double donor ratio}
-    \label{fig:test}
-\end{figure}
+As expected, all observed trends are consistent with our hypotheses. In \autoref{exp:percentage_vs_number_of_patients}, the \textit{2-Cycle 1-Chain Multi-Donor Model} achieves an improvement over the \textit{2-Cycle No-Chain Multi-Donor Model}, increasing the match rate by $5\%$ for all numbers of patients. In \autoref{exp:percentage_vs_ddr}, interestingly, when $ddr$ reaches $10\%$, the percentage of saved patients in the \textit{2-Cycle 1-Chain Multi-Donor Model} converges to $60\%$, achieving a $5\%$ increase over the \textit{2-Cycle No-Chain Multi-Donor Model}.
 
 \begin{figure}[H]
     \centering
     \includesvg[width=\linewidth]{data/test2}
-    \caption[average \% of satisfied patients vs double donor ratio]{average \% of satisfied patients vs number of patients}
+    \caption[Average percentage of satisfied patients vs number of patients (with double donor ratio = 0.1)]{Results of \autoref{exp:percentage_vs_number_of_patients}. Average percentage of satisfied patients vs number of patients (with double donor ratio = 0.1)}
     \label{fig:test2}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\linewidth]{data/test}
+    \caption[Average \% of satisfied patients (among 1000) vs double donor ratio]{Results of \autoref{exp:percentage_vs_ddr}. Average \% of satisfied patients  (among 1000) vs double donor ratio}
+    \label{fig:test}
+\end{figure}
+
 
 Regarding computational efficiency, we observe that for most instances (up to one thousand patients) the optimal solution can be computed within one minute on a standard laptop. More specifically, out of 1,100 instances, only four exceeded the timeout threshold. This indicates that computational resources are unlikely to pose a practical bottleneck for applying our model in real-world scenarios.
 
