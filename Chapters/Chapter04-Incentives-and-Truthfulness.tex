@@ -14,18 +14,18 @@ Let's begin by defining the incentives of each patient-donor group. Naturally, t
 \item Receive no compatible kidney and lose 0 proxy kidneys.
 \end{enumerate}
 
-Note that we do not consider a case where a group receives no compatible kidney but still loses a proxy kidney. If that was the outcome for some group, the groups would simply refuse to participate. Furthermore, if a group chooses to participate as an alternative-donors group, the third outcome is not taken as an option for this group.
+Note that we do not consider a case where a group receives no compatible kidney but still loses a proxy kidney. If that were the outcome for some group, the group would simply refuse to participate. Furthermore, if a group chooses to participate as an alternative-donors group, the third outcome is not taken as an option for this group.
 
 It is not immediately obvious whether participating in the \textit{multiple-donors} program provides any advantage for a patient-donor group compared to participating in the \textit{alternative-donors} program. The example in \autoref{fig:incentive_motivation_example2} clarifies this question. In \textbf{(a)}, we see an example graph where patient $p_1$ has two proxy donors: $d_1^1$ and $d_1^2$. The graph includes two overlapping cycles: one of length two that includes $p_1$, and another of length three that does not. In the solution, only one of these cycles can be selected.
 
 If patient $p_1$ chooses to report their donors as alternative donors, $d_1^1 \oplus d_1^2$, then the system (which maximizes the number of transplants) will select the longer cycle (the orange one in \textbf{(b)}), resulting in $p_1$ not receiving a compatible kidney. On the other hand, if $p_1$ is willing to use both proxy donors, then (as shown in \textbf{(c)}) the system will select the cycle of length two that includes $p_1$ and the chain initiated by $d_1^2$, also of length two, saving a total of four patients.
 
-This scenario is not far removed from real life. Imagine that $p_1$ is a child in need of a kidney transplant, and $d_1^1$ and $d_1^2$ are the child’s parents—both incompatible with the child but willing to do anything to help. The \textit{multiple-donors} model opens new possibilities for such groups in these situations.
+This scenario is not far removed from real life. Imagine that $p_1$ is a child in need of a kidney transplant, and $d_1^1$ and $d_1^2$ are the child’s parents, both incompatible with the child but willing to do anything to help. The \textit{multiple-donors} model opens new possibilities for such groups in these situations.
 
 \begin{figure}
     \centering
     \includegraphics{data/incentive_motivation_example2.pdf}
-    \caption[An example showing the benefit of reporting two proxy donors in multiple-donors model]{\textbf{(a)} shows an example of a graph containing two overlapping cycles, where the left cycle contains patient $p_1$ who has two proxy donors: $d_1^1$ and $d_1^2$. In \textbf{(b)} patient $p_1$ reports his donors as alternative donors $d_1^1 \oplus d_1^2$ and in result don't receive a compatible kidney. \textbf{(c)} shows that by reporting two proxy donors in the multiple-donors model, patient $p_1$ receives a compatible kidney in exchange for two proxy kidneys.}
+    \caption[An example showing the benefit of reporting two proxy donors in the multiple-donors model]{\textbf{(a)} shows an example of a graph containing two overlapping cycles, where the left cycle contains patient $p_1$ who has two proxy donors: $d_1^1$ and $d_1^2$. In \textbf{(b)}, patient $p_1$ reports his donors as alternative donors $d_1^1 \oplus d_1^2$ and as a result doesn't receive a compatible kidney. \textbf{(c)} shows that by reporting two proxy donors in the multiple-donors model, patient $p_1$ receives a compatible kidney in exchange for two proxy kidneys.}
     \label{fig:incentive_motivation_example2}
 \end{figure}
 
@@ -45,20 +45,20 @@ Of course, truthfulness implies weak truthfulness, but not vice versa.
 \subsection{Truthfulness}
 \begin{lemma}
     \label{lemma:social_walfare_not_strongly_truthful}
-    Social-welfare maximizing multiple donor model is not truthful.
+    The social-welfare maximizing multiple donor model is not truthful.
     \begin{proof}
         Let there be an algorithm $A$ solving \textit{social-welfare maximizing multiple donors} problem and consider the example graph from \autoref{fig:multiple_model_example}. In the example, if patient $p_2$ reports both of his proxies; $d_2^1$ and $d_2^2$, $A$ assigns him a compatible kidney from $d_1$ in exchange for two proxy donors. On the other hand, if patient $p_1$ decides to hide donor $d_2^2$, $A$ assigns him a kidney from $d_1$ in exchange for only one proxy kidney $d_2^1$.
     \end{proof}
 \end{lemma}
 
 
-Moreover, knowing the structure of the graph in the social-welfare maximizing problem gives player an advantage, this is perfectly depicted in \autoref{fig:prisoners_dilemma} which shows two patients being in the Prisoner's Dilemma situation. In the example, two patients $p_1$ and $p_2$ have two proxy donors; $d_1^2$, $d_2^2$ and $d_2^1$, $d_2^2$ respectively. Both patients are in the same cycle of length 3 which overlaps with a larger one of length 4. If both decide to only report one of their donors (as shown in \textbf{(b)}), the larger cycle is selected in the solution, and both patients end up without compatible kidney. If both decide to report all of theirs donors (see \textbf{(c)}), the smaller cycle is selected together with two chains, each of length 2, summing up to 7 patients saved. In this case both patients receive a compatible kidney but at the same time both lose two of theirs proxy donors. If patient $p_1$ knows the structure of the graph and knows that $p_2$ will report two of his donors, then, he can decide to hide donor $d_1^2$ (see \textbf{(d)}). In that case, small cycle is selected together with one chain on length 2 initiated by $d_2^2$ summing up to total 5 patients saved. Notably, patient $p_1$ received a compatible kidney and spent only one of his donors, while, $p_2$ spent two of his proxies.
+Moreover, knowing the structure of the graph in the social-welfare maximizing problem gives players an advantage, which is perfectly depicted in \autoref{fig:prisoners_dilemma}, which shows two patients being in the Prisoner's Dilemma situation. In the example, two patients $p_1$ and $p_2$ have two proxy donors; $d_1^1$, $d_1^2$ and $d_2^1$, $d_2^2$ respectively. Both patients are in the same cycle of length 3, which overlaps with a larger one of length 4. If both decide to only report one of their donors (as shown in \textbf{(b)}), the larger cycle is selected in the solution, and both patients end up without a compatible kidney. If both decide to report all of theirs donors (see \textbf{(c)}), the smaller cycle is selected together with two chains, each of length 2, summing up to 7 patients saved. In this case, both patients receive a compatible kidney, but at the same time, both lose two of theirs proxy donors. If patient $p_1$ knows the structure of the graph and knows that $p_2$ will report two of his donors, then, he can decide to hide donor $d_1^2$ (see \textbf{(d)}). In that case, the smaller cycle is selected together with one chain of length 2 initiated by $d_2^2$, summing up to total of 5 patients saved. Notably, patient $p_1$ received a compatible kidney and spent only one of his donors, while, $p_2$ spent two of his proxies.
 
 
 \begin{figure}
     \centering
     \includegraphics{data/prisoners_dilemma.pdf}
-    \caption[Prisoner's dilemma in multiple-donors model]{\textbf{(a)} illustrates a graph where patients $p_1$ and $p_2$ are in \textit{Prisoner's Dilemma} situation. \textbf{(b)} shows that if both $p_1$ and $p_2$ decide not to report $d_1^2$ and $d_2^2$ respectively, they both don't receive compatible kidney in the final solution. In \textbf{(c)}, both patients reported both of theirs donors, they both receive compatible kidney but also they both spent two kidneys of their proxy donors. In \textbf{(d)}, patient $p_2$ reported both of his proxy donors, patient $p_1$ reported only $d_1^1$. In this case, $p_1$ gets a compatible kidney and spends only one proxy kidney. Patient $p_2$ gets a compatible kidney as well but spends two proxy kidneys. The symmetric case occurs when $p_1$ reports two proxy donors and $p_2$ reports only one of his proxies.}
+    \caption[Prisoner's dilemma in multiple-donors model]{\textbf{(a)} illustrates a graph where patients $p_1$ and $p_2$ are in \textit{Prisoner's Dilemma} situation. \textbf{(b)} shows that if both $p_1$ and $p_2$ decide not to report $d_1^2$ and $d_2^2$ respectively, they both don't receive a compatible kidney in the final solution. In \textbf{(c)}, both patients reported both of their donors; they both receive compatible kidneys, but also they both spent two kidneys from their proxy donors. In \textbf{(d)}, patient $p_2$ reported both of his proxy donors, patient $p_1$ reported only $d_1^1$. In this case, $p_1$ gets a compatible kidney and spends only one proxy kidney. Patient $p_2$ gets a compatible kidney as well, but spends two proxy kidneys. The symmetric case occurs when $p_1$ reports two proxy donors and $p_2$ reports only one of his proxies.}
     \label{fig:prisoners_dilemma}
 \end{figure}
 
@@ -75,14 +75,14 @@ When it comes to weak truthfulness, not every algorithm that solves the social-w
     \end{proof}
 \end{lemma}
 
-The proof of the previous lemma shows that inconsistent tie-breaking is the reason an algorithm may fail to be weakly truthful. In the next lemma, we show that an algorithm with an arbitrary consistent tie-breaking rule is weakly truthful. Before  we do that, let's define what consistent tie-breaking even means.
+The proof of the previous lemma shows that inconsistent tie-breaking is the reason an algorithm may fail to be weakly truthful. In the next lemma, we show that an algorithm with an arbitrary consistent tie-breaking rule is weakly truthful. Before we do that, let's define what consistent tie-breaking even means.
 
 \begin{definition}[Consistent tie-breaking rule]
 \label{consistent_tie_breaking_rule}
-    Given the set $S_k$ of all solutions that achieve the same score $k$ (i.e., the same number of patients saved), a consistent tie-breaking rule imposes a strict, arbitrary ordering over $S_k$ that is independent of the reports provided by patient-donors groups. For any input graph $G$ where the maximum number of patients that can be saved is $k$, the rule selects the highest-ranked valid solution from $S_k$ according to this fixed ordering.
+    Given the set $S_k$ of all solutions that achieve the same score $k$ (i.e., the same number of patients saved), a consistent tie-breaking rule imposes a strict, arbitrary ordering over $S_k$ that is independent of the reports provided by patient-donor groups. For any input graph $G$ where the maximum number of patients that can be saved is $k$, the rule selects the highest-ranked valid solution from $S_k$ according to this fixed ordering.
 \end{definition}
 
-A particularly appealing consistent tie-breaking rule is based on assigning priorities among the patients, similar to how waiting lists for kidneys from deceased donors are handled. In such lists, patients are ranked according to a fixed priority score that reflects medical urgency, ethical considerations, or logistical factors. When a kidney becomes available, it is allocated to the highest-priority patient among those compatible with the organ. Translating this idea to our mechanism design setting, we can impose a consistent tie-breaking rule by predefining a strict priority ordering over the agents. When multiple allocations yield the same utility, the tie is broken in favor of the allocation that benefits the agent with the highest priority.
+A particularly appealing, consistent tie-breaking rule is based on assigning priorities among the patients, similar to how waiting lists for kidneys from deceased donors are handled. In such lists, patients are ranked according to a fixed priority score that reflects medical urgency, ethical considerations, or logistical factors. When a kidney becomes available, it is allocated to the highest-priority patient among those compatible with the organ. Translating this idea to our mechanism design setting, we can impose a consistent tie-breaking rule by predefining a strict priority ordering over the agents. When multiple allocations yield the same utility, the tie is broken in favor of the allocation that benefits the agent with the highest priority.
 
 \begin{lemma}
     An algorithm with a consistent tie-breaking rule solving the social-welfare maximizing multiple donors model is weakly truthful.
@@ -104,7 +104,7 @@ A particularly appealing consistent tie-breaking rule is based on assigning prio
 \begin{figure}
     \centering
     \includegraphics{data/weak_truthfulness.pdf}
-    \caption[An example output of an algorithm without a consistent tie-breaking strategy.]{Example outputs from an algorithm solving the social-welfare-maximizing multiple donors model without a consistent tie-breaking strategy. In \textbf{(a)}, the algorithm selects the left cycle of length 2, assigning $p_1$ a compatible kidney. In \textbf{(b)}, patient $p_1$ reports an additional 'dangling' donor $d_1^2$. This time, the algorithm selects the right cycle of length 2, which is equally compelling, resulting in patient $p_1$ not being matched to a compatible kidney.}
+    \caption[An example output of an algorithm without a consistent tie-breaking strategy]{Example outputs from an algorithm solving the social-welfare-maximizing multiple donors model without a consistent tie-breaking strategy. In \textbf{(a)}, the algorithm selects the left cycle of length 2, assigning $p_1$ a compatible kidney. In \textbf{(b)}, patient $p_1$ reports an additional 'dangling' donor $d_1^2$. This time, the algorithm selects the right cycle of length 2, which is equally compelling, resulting in patient $p_1$ not being matched to a compatible kidney.}
     \label{fig:weak_truthfulness}
 \end{figure}
 
@@ -140,7 +140,7 @@ Let $A$ be an algorithm that is weakly truthful. Then the randomized mechanism $
 
 Suppose first that, under $s_{-i}$, patient $i$ receives a kidney in the output of algorithm $A$. Since $A$ is weakly truthful, patient $i$ would also receive a kidney under $s$. Therefore, in the randomized mechanism $R$, the probability that patient $i$ receives a kidney under $s$ is strictly higher than under $s_{-i}$, since the value $(2n - m)$ is smaller when both donors are reported. That is, $R(s)$ has a higher expected utility than $R(s_{-i})$.
 
-Now suppose that under $s_{-i}$, patient $i$ does not receive a kidney in $A$. In that case, reporting both donors cannot result in a worse outcome under $R$, and may result in a better one. In both scenarios, truthful reporting yields weakly higher expected utility.
+Now suppose that under $s_{-i}$, patient $i$ does not receive a kidney in $A$. In that case, reporting both donors cannot result in a worse outcome under $R$, and may result in a better one. In both scenarios, truthful reporting yields a weakly higher expected utility.
 
 Thus, for every patient, reporting all available donors is a dominant strategy in the randomized mechanism $R$, and therefore $R$ is truthful.
 \end{proof}

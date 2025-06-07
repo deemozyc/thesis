@@ -36,12 +36,12 @@ Given a directed graph $G = (V, E)$, a designated source vertex $s \in V$, and a
 
 This problem is NP-complete in general directed graphs, by a standard reduction from the \textit{Hamiltonian Path} problem \cite{garey1979computers}.
 
-Moreover, the \textit{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, cannot be polynomial time approximated
+Moreover, the \textit{Longest Path from Fixed Source} problem is not only NP-complete but also hard to approximate. In general directed graphs, the solution cannot be polynomial time approximated
 within $n^{1-\varepsilon}$ for any $\varepsilon  > 0$ unless $\text{P} = \text{NP}$~\cite{bjorklund2004approximating}.
 
 \begin{problem}[2P2N-3SAT]
 \label{prob:2p2n_3sat}
-Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in at most two positive literals and at most two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
+Given a Boolean formula $\phi$ in conjunctive normal form (CNF), where each clause contains exactly three literals, and each variable appears in two positive literals and two negative literals throughout the formula, decide whether $\phi$ is satisfiable.
 \end{problem}
 
 This problem is a well-known restriction of the classical \textit{3SAT} problem, and it remains NP-complete under the stated constraints. The restriction limits the number of times each variable can occur positively and negatively, which is useful for reductions that require bounded variable degrees. The NP-completeness of this variant was established in \cite{berman2004approximation}.

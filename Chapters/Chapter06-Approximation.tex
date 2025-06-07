@@ -3,12 +3,12 @@
 
 In this chapter, we investigate the approximability of the \textit{2-Cycle 1-Chain Multi-Donor Kidney Exchange Problem}. We first present a simple approximation algorithm that leverages known results from matching and set packing. We then analyze its approximation ratio and demonstrate that it achieves a constant strictly better than $0.5$.
 
-Based on the two reductions in \autoref{cha:computational_complexity_analysis}, we can also get some results for the  hardness of approximation.
+Based on the two reductions in \autoref{cha:computational_complexity_analysis}, we can also get some results for the hardness of approximation.
 
 
 \section{Approximation Algorithm for Multi-Donor Exchange}
 
-A natural baseline heuristic is to select only disjoint 2-cycles and ignore all chains. This corresponds to the \emph{alternative donors} model described in \autoref{cha:problem_formulation}, where each patient has one or more donors but only 2-cycles are allowed. The problem then reduces to maximum matching in an undirected graph, solvable in polynomial time via Edmonds' Blossom algorithm~\cite{edmonds1965paths}. Since each 2-cycle can potentially support up to two chain transplants, this strategy yields a $0.5$-approximation in the worst case.
+A natural baseline heuristic is to select only disjoint 2-cycles and ignore all chains. This corresponds to the \emph{alternative donors} model described in \autoref{cha:problem_formulation}, where each patient has one or more donors, but only 2-cycles are allowed. The problem then reduces to maximum matching in an undirected graph, solvable in polynomial time via Edmonds' Blossom algorithm~\cite{edmonds1965paths}. Since each 2-cycle can potentially support up to two chain transplants, this strategy yields a $0.5$-approximation in the worst case.
 
 To improve upon the baseline, we reinterpret our problem as a special case of the \textit{weighted $k$-Set Packing problem}. Details in \autoref{pro:weighted_set_packing}. %, where each feasible exchange, comprising a 2-cycle and up to two chains, is encoded as a subset of at most four patients. And the weight is the number of patients. 
 
@@ -20,7 +20,7 @@ The following algorithm achieves an approximation ratio of at least $\frac{36}{6
 \end{lemma}
 
 \begin{proof}
-To simplify, we assume that $\varepsilon$ is close to $0$. The algorithm considers three disjoint settings:
+To simplify, we assume that $\varepsilon$ is close to $0$. The algorithm considers four steps:
 \begin{enumerate}
     \item Use only 2-cycles and apply the Blossom algorithm for exact maximum matching.
     \item Use only 2-cycles with one additional chain (3-element subsets), and apply a $\frac{3}{4}$-approximation algorithm for unweighted 3-Set Packing.
@@ -79,7 +79,7 @@ Note that the approximation algorithm for unweighted 3-Set Packing does not exac
 
 
 \begin{lemma}
-For any fixed constant $k \ge 2$, the maximization version of the \textit{$k$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} cannot be polynomial time approximated
+For any fixed constant $n \ge 2$, the maximization version of the \textit{$n$-Cycle Unbounded-Chain Multi-Donor Kidney Exchange Problem} cannot be polynomial time approximated
 within $n^{1-\varepsilon}$ for any $\varepsilon  > 0$ unless $\text{P} = \text{NP}$.
 \end{lemma}
 

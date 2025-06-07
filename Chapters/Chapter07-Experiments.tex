@@ -3,7 +3,7 @@
 
 
 \section{The Random Graph Model}
-The random graph model we use for the experiment was inspired by the one introduced in \cite{toulis2011random}. It was designed for generating patient-donor pairs based on a fixed blood type distribution and tissue-type compatibility factor $1 - p_c = 0.8$. In our setting, we consider patient-donors groups with up to two proxy donors, so the already existing random graph model had to be modified in order to fit our requirements. We introduce a new variable; \textit{double donor ratio} ($ddr$), which represents the percentage of patient-donor groups with two proxy donors. The amount of information about what $ddr$ is in the real-world KE programs is limited, \cite{holscher2018kidney} reports that only $7.3\%$ candidates registered with more than one potential donor. The following are the algorithms we use for generating random patient-donors groups (\autoref{alg:generate_patient_donors}) and the compatibility edges between them (\autoref{alg:generate_compatibility_edges})
+The random graph model we use for the experiment was inspired by the one introduced in \cite{toulis2011random}. It was designed for generating patient-donor pairs based on a fixed blood type distribution and tissue-type compatibility factor $1 - p_c = 0.8$. In our setting, we consider patient-donors groups with up to two proxy donors, so the already existing random graph model had to be modified in order to fit our requirements. We introduce a new variable; \textit{double donor ratio} ($ddr$), which represents the percentage of patient-donor groups with two proxy donors. The amount of information about what the value of $ddr$ is in the real-world KE programs is limited, \cite{holscher2018kidney} reports that only $7.3\%$ of candidates registered with more than one potential donor. The following are the algorithms we use for generating random patient-donor groups (\autoref{alg:generate_patient_donors}) and the compatibility edges between them (\autoref{alg:generate_compatibility_edges})
 
 \begin{algorithm}
     \caption{Generate patient-donor groups with multiple donors}
@@ -15,7 +15,7 @@ The random graph model we use for the experiment was inspired by the one introdu
     $D \gets \emptyset$\;
     $\#double\_donor\_groups \gets n \cdot ddr$\;
     \While{$|D| < n$}{
-        $patient\_type \gets \text{pick random blood type}$\;
+        $p \gets \text{pick random blood type}$\;
 
         \If{$|D| < \#double\_donor\_groups$}{
             $donor\_types \gets \text{pick 2 random blood types}$\;
@@ -25,8 +25,8 @@ The random graph model we use for the experiment was inspired by the one introdu
         }
         \:
 
-        \If{ $\forall donor\_type \in donor\_types$ ($patient\_type$\textup{ is incompatible with }$donor\_type$ \textup{ or } $random() < p_c$)}{
-            $D \gets D \cup \{(patient\_type, donors\_types)\}$\;
+        \If{ $\forall d \in donor\_types$, $p$\textup{ is incompatible with }$d$ \textup{ or } $random() < p_c$ }{
+            $D \gets D \cup \{(p, donors\_types)\}$\;
         }
     }
     \Return{D}
@@ -54,12 +54,12 @@ The random graph model we use for the experiment was inspired by the one introdu
     \Return{$E_c$}
 \end{algorithm}
 
-The graph we generate can be adapted to the model with only one donor per group by either randomly removing one of the proxy donors from each group containing two proxy donors, or by setting the parameter $ddr$ to $0$ (which is equivalent to the model described in \cite{toulis2011random}). Importantly, these two methods produce models of KE programs with different blood type distributions. Notably, as $ddr$ increases, the percentage of patients with an unfavorable blood type (‘O’) also increases, as shown in \autoref{fig:patient_blood_type_as_ddr_increases}.
+The graph we generate can be adapted to the model with only one donor per group by either randomly removing one of the proxy donors from each group containing two proxy donors, or by setting the parameter $ddr$ to $0$ (which is equivalent to the model described in \cite{toulis2011random}). Importantly, these two methods produce models of KE programs with different blood type distributions. Notably, as $ddr$ increases, the percentage of patients with an unfavorable blood type O also increases, as shown in \autoref{fig:patient_blood_type_as_ddr_increases}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.\linewidth]{data/patient_blood_type_as_ddr_increases.png}
-    \caption[Distribution of patient's blood types as double donor ratio changes]{The diagram illustrating change in distribution of patient's blood types in KE programs as we change the ratio of group having two proxy donors.}
+    \caption[Distribution of patients' blood types as double donor ratio changes]{The diagram illustrating the change in the distribution of patients' blood types in KE programs as we change the ratio of groups having two proxy donors.}
     \label{fig:patient_blood_type_as_ddr_increases}
 \end{figure}
 
@@ -98,7 +98,8 @@ For the experimental analysis, we investigate two key questions.
 \section{Results}
 
 
-The following two figures (\autoref{fig:test2} and \autoref{fig:test}) present the experimental results. The semi-transparent region around the curve indicates the variance across runs. In the first experiment, the number of patients is fixed to 1000. In the second experiment, the double donor rate is fixed to $10\%$.
+The following two figures (\autoref{fig:test2} and \autoref{fig:test}) present the experimental results. The semi-transparent region around the curve indicates the variance across runs. For each test case, we run the experiment 100 times and average the results.
+In the first experiment, the number of patients is fixed at 1000. In the second experiment, the double donor rate is fixed to $10\%$.
 
 As expected, all observed trends are consistent with our hypotheses. In \autoref{exp:percentage_vs_number_of_patients}, the \textit{2-Cycle 1-Chain Multi-Donor Model} achieves an improvement over the \textit{2-Cycle No-Chain Multi-Donor Model}, increasing the match rate by $5\%$ for all numbers of patients. In \autoref{exp:percentage_vs_ddr}, interestingly, when $ddr$ reaches $10\%$, the percentage of saved patients in the \textit{2-Cycle 1-Chain Multi-Donor Model} converges to $60\%$, achieving a $5\%$ increase over the \textit{2-Cycle No-Chain Multi-Donor Model}.
 
@@ -117,7 +118,7 @@ As expected, all observed trends are consistent with our hypotheses. In \autoref
 \end{figure}
 
 
-Regarding computational efficiency, we observe that for most instances (up to one thousand patients) the optimal solution can be computed within one minute on a standard laptop. More specifically, out of 1,100 instances, only four exceeded the timeout threshold. This indicates that computational resources are unlikely to pose a practical bottleneck for applying our model in real-world scenarios.
+Regarding computational efficiency, we observe that for most instances (up to one thousand patients), the optimal solution can be computed within one minute on a standard laptop. More specifically, out of 1,100 instances, only four exceeded the timeout threshold. This indicates that computational resources are unlikely to pose a practical bottleneck for applying our model in real-world scenarios.
 
 
 %%% Local Variables:
